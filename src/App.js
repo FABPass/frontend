@@ -6,11 +6,12 @@ import {
     Route,
     Redirect,
 } from "react-router-dom";
+import Register from "./components/Register/Register";
 
 const App = () => {
     return (
         <div>
-            <Login></Login>
+            <Register></Register>
         </div>
     );
 };
