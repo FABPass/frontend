@@ -42,7 +42,7 @@ const FormInput = props => (
 
 const OtherMethods = props => (
     <div id="logRegSwitch">
-        <a href={"https://youtube.com"}>Don't have an account? Sign up!</a>
+        <a href={window.location.protocol + "//" + window.location.host + "/register"}>Don't have an account? Sign up!</a>
     </div>
 );
 

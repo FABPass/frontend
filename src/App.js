@@ -1,18 +1,25 @@
 import React from 'react';
 import Login from "./components/Login/Login";
+import Register from "./components/Register/Register";
 import {
     BrowserRouter as Router,
-    Switch,
+    Routes,
     Route,
     Redirect,
 } from "react-router-dom";
-import Register from "./components/Register/Register";
 
 const App = () => {
     return (
-        <div>
-            <Register></Register>
-        </div>
+        <Router>
+            <div>
+                <div className={"content"}>
+                    <Routes>
+                        <Route path={"/register"} element={<Register/>}/>
+                        <Route path={"/login"} element={<Login/>}/>
+                    </Routes>
+                </div>
+            </div>
+        </Router>
     );
 };
 

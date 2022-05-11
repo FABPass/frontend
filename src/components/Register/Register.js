@@ -36,13 +36,13 @@ const Form = props => (
 );
 
 const FormButton = props => (
-    <div id="button" class="row">
+    <div id="button" className="row">
         <button>{props.title}</button>
     </div>
 );
 
 const FormInput = props => (
-    <div class="row">
+    <div className="row">
         <label>{props.description}</label>
         <input type={props.type} placeholder={props.placeholder}/>
     </div>
@@ -50,7 +50,7 @@ const FormInput = props => (
 
 const OtherMethods = props => (
     <div id="logRegSwitch">
-        <a href={"https://youtube.com"}>Already have an account? Sign in!</a>
+        <a href={window.location.protocol + "//" + window.location.host + "/login"}>Already have an account? Sign in!</a>
     </div>
 );
 
