@@ -4,6 +4,8 @@ import Logo from "../../resources/fabpass_logo.png"
 import {useRef, useState, useEffect, useContext} from 'react';
 import AuthContext from "../../context/AuthProvider";
 import axios from "axios";
+import * as qs from 'qs'
+
 const LOGIN_URL = '/login';
 
 const Login = () => {
@@ -34,7 +36,11 @@ const Login = () => {
 
     const onBtnClick = async () => {
         try{
-            const response = await axios.post(LOGIN_URL, JSON.stringify({email, password}), {
+            let parameters = {
+                email: email,
+                password: password
+            }
+            const response = await axios.post("http://localhost:8084" + LOGIN_URL, qs.stringify({email, password}), {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 }
