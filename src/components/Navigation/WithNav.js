@@ -9,9 +9,9 @@ const WithNav = () => {
             <Navbar bg="info" variant="dark">
                 <Logo loggedIn={"loggedIn"}/>
                 <Nav className="me-auto">
-                    <Nav.Link href="/login">Home</Nav.Link>
-                    <Nav.Link href="#features">Features</Nav.Link>
-                    <Nav.Link href="#pricing">Pricing</Nav.Link>
+                    <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+                    <Nav.Link href="#pricing">Profile</Nav.Link>
+                    <Nav.Link href="#pricing">Create New</Nav.Link>
                 </Nav>
             </Navbar>
             <Outlet />
