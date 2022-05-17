@@ -5,6 +5,7 @@ import {useRef, useState, useEffect, useContext} from 'react';
 import AuthContext from "../../context/AuthProvider";
 import axios from "axios";
 import * as qs from 'qs'
+import { useNavigate } from "react-router-dom";
 
 const LOGIN_URL = '/login';
 
@@ -17,6 +18,8 @@ const Login = () => {
     const[password, setPassword] = useState('');
     const[errMsg, setErrMsg] = useState('');
     const[success, setSuccess] = useState(false);
+
+    let navigate = useNavigate();
 
     useEffect(() => {
         emailRef.current.focus();
@@ -48,6 +51,7 @@ const Login = () => {
             console.log(JSON.stringify(response?.data));
             const accessToken = response?.data?.accessToken;
             setAuth({email, password, accessToken});
+            navigate('/dashboard');
         } catch (err) {
             if(!err?.response)
                 setErrMsg('No Server Response');
