@@ -4,6 +4,8 @@ import Register from "./components/Register/Register";
 import Dashboard from "./components/Dashboard/Dashboard";
 import WithoutNav from "./components/Navigation/WithoutNav";
 import WithNav from "./components/Navigation/WithNav";
+import Logo from "./components/Logo/Logo";
+import './App.css';
 import {
     BrowserRouter as Router,
     Routes,

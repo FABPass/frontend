@@ -6,14 +6,6 @@ body{
     font-family: "work sans";
 }
 
-.logo {
-    display: flex;
-    margin: auto;
-    max-width: 30%;
-    max-height: 30%;
-    padding-top: 5%;
-}
-
 #loginform{
     max-width: 500px;
     min-width: 300px;

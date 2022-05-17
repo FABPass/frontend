@@ -1,14 +1,15 @@
 import React from 'react';
 import "./Register.css";
-import Logo from "../../resources/fabpass_logo.png"
+
 import PasswordStrengthBar from "react-password-strength-bar";
+import Logo from "../Logo/Logo";
 
 //const {password} = this.state;
 
 const Register = () => {
     return (
         <div id="registerform">
-            <img src={Logo} alt={"FABPass Logo"} className={"logo"}/>
+            <Logo loggedIn={"notLoggedIn"}/>
             <FormHeader title="Sign up" />
             <Form />
             <OtherMethods />

@@ -1,11 +1,11 @@
 import React from 'react';
 import "./Login.css";
-import Logo from "../../resources/fabpass_logo.png"
 import {useRef, useState, useEffect, useContext} from 'react';
 import AuthContext from "../../context/AuthProvider";
 import axios from "axios";
 import * as qs from 'qs'
 import { useNavigate } from "react-router-dom";
+import Logo from "../Logo/Logo";
 
 const LOGIN_URL = '/login';
 
@@ -67,7 +67,7 @@ const Login = () => {
 
     return (
         <div id="loginform">
-            <img src={Logo} alt={"FABPass Logo"} className={"logo"}/>
+            <Logo loggedIn={"notLoggedIn"}/>
             <h2 id="headerTitle">Login</h2>
             <div>
                 <div className="row">
