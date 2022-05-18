@@ -17,7 +17,6 @@ const Login = () => {
     const[email, setEmail] = useState('');
     const[password, setPassword] = useState('');
     const[errMsg, setErrMsg] = useState('');
-    const[success, setSuccess] = useState(false);
 
     let navigate = useNavigate();
 
@@ -39,17 +38,13 @@ const Login = () => {
 
     const onBtnClick = async () => {
         try{
-            let parameters = {
-                email: email,
-                password: password
-            }
             const response = await axios.post("http://localhost:8084" + LOGIN_URL, qs.stringify({email, password}), {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 }
             });
             console.log(JSON.stringify(response?.data));
-            const accessToken = response?.data?.accessToken;
+            const accessToken = response?.data?.access_token;
             setAuth({email, password, accessToken});
             navigate('/dashboard');
         } catch (err) {

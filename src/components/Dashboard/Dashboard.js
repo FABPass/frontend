@@ -1,7 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Card} from "react-bootstrap";
 
+
 const Dashboard = () => {
+
+    useEffect(() => {
+        console.log("Ucitana stranica: ")
+    })
+
     return (
         <div>
             <Card
