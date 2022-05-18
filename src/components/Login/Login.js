@@ -78,7 +78,7 @@ const Login = () => {
                     <label>Password</label>
                     <input type="password" placeholder="Enter your password" onChange={onPwdChange} value={password} required/>
                 </div>
-                <p ref={errRef} aria-live="assertive">{errMsg}</p>
+                <p ref={errRef} aria-live="assertive" id={"errMsg"}>{errMsg}</p>
                 <div id="button" className="row">
                     <button onClick={onBtnClick}>Log in</button>
                 </div>

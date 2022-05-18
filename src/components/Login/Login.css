@@ -118,4 +118,8 @@
     margin-top: 1.5rem;
 }
 
-
+#errMsg{
+    text-align: center;
+    padding-top: 5%;
+    color: red;
+}
