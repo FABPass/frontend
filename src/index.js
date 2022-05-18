@@ -5,6 +5,12 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 import {AuthProvider} from "./context/AuthProvider";
+import axios from "axios";
+
+axios.interceptors.request.use(request => {
+    console.log("Ovo je interceptor");
+    return request;
+})
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

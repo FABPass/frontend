@@ -58,7 +58,7 @@ const Login = () => {
             else if (err.response?.status === 400)
                 setErrMsg('No Server Response');
             else if (err.response?.status === 401)
-                setErrMsg('Unauthorized');
+                setErrMsg('Incorrect email or password!');
             else
                 setErrMsg('Login failed');
         }
