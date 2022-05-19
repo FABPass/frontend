@@ -1,11 +1,29 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Card} from "react-bootstrap";
+import axios from "axios";
+import * as qs from "qs";
+import {baseUrl} from "../../api/baseUrl";
+import AuthContext from "../../context/AuthProvider";
 
 
 const Dashboard = () => {
 
+    const {auth, setAuth} = useContext(AuthContext);
+
     useEffect(() => {
-        console.log("Ucitana stranica: ")
+        const getUserId = async () => {
+            try{
+                const response = await axios.post(baseUrl + "/user", qs.stringify(auth.accessToken), {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                });
+                const userId = response?.data?.id;
+
+            } catch (err) {
+
+            }
+        }
     })
 
     return (

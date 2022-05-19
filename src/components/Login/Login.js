@@ -6,6 +6,7 @@ import axios from "axios";
 import * as qs from 'qs'
 import { useNavigate } from "react-router-dom";
 import Logo from "../Logo/Logo";
+import {baseUrl} from "../../api/baseUrl";
 
 const LOGIN_URL = '/login';
 
@@ -38,14 +39,21 @@ const Login = () => {
 
     const onBtnClick = async () => {
         try{
-            const response = await axios.post("http://localhost:8084" + LOGIN_URL, qs.stringify({email, password}), {
+            const response = await axios.post(baseUrl + LOGIN_URL, qs.stringify({email, password}), {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 }
             });
             console.log(JSON.stringify(response?.data));
             const accessToken = response?.data?.access_token;
-            setAuth({email, password, accessToken});
+            try{
+                const response = await axios.get(baseUrl + "/user?email=" + email);
+                const userId = response?.data?.id;
+                console.log("OVO JE USER ID: " + userId);
+                setAuth({email, password, accessToken, userId});
+            } catch (err) {
+
+            }
             navigate('/dashboard');
         } catch (err) {
             if(!err?.response)

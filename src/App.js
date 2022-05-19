@@ -19,10 +19,17 @@ const App = () => {
 
     const {auth} = useContext(AuthContext);
 
-    axios.interceptors.request.use(request => {
-        console.log(auth);
+    axios.interceptors.request.use(async request => {
+        // console.log("OVO JE ACCESS TOKEN: ");
+        // console.log(auth);
+        // request.headers = {
+        // 'Authorization': `Bearer ${auth.accessToken}`
+        // }
         return request;
-    })
+        },
+            error => {
+            Promise.reject(error)
+        });
 
     return (
         <Router>
