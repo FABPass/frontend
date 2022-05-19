@@ -9,9 +9,11 @@ import Logo from "../Logo/Logo";
 import {baseUrl} from "../../api/baseUrl";
 
 const LOGIN_URL = '/login';
+let accessToken = '';
+let renderCount = 0
 
 const Login = () => {
-    const {setAuth} = useContext(AuthContext);
+    const {auth, setAuth} = useContext(AuthContext);
     const emailRef = useRef();
     const errRef = useRef();
 
@@ -37,6 +39,28 @@ const Login = () => {
         setPassword(e.target.value);
     }
 
+    useEffect(() => {
+        const getUserId = async () => {
+            try{
+                console.log("OVO JE ACCESS TOKEN:")
+                console.log(auth)
+                const response = await axios.get(baseUrl + "/user?email=" + email);
+                const userId = response?.data?.id;
+                console.log("OVO VRATI REQUEST ZA USER ID: ");
+                console.log(JSON.stringify(response?.data));
+                console.log("OVO JE USER ID: " + userId);
+                if (renderCount++ === 1) {
+                    setAuth({email, password, accessToken, userId});
+                    navigate('/dashboard')
+                }
+            } catch (err) {
+
+            }
+        }
+        if (renderCount++ === 1)
+            getUserId()
+    }, [auth])
+
     const onBtnClick = async () => {
         try{
             const response = await axios.post(baseUrl + LOGIN_URL, qs.stringify({email, password}), {
@@ -45,16 +69,9 @@ const Login = () => {
                 }
             });
             console.log(JSON.stringify(response?.data));
-            const accessToken = response?.data?.access_token;
-            try{
-                const response = await axios.get(baseUrl + "/user?email=" + email);
-                const userId = response?.data?.id;
-                console.log("OVO JE USER ID: " + userId);
-                setAuth({email, password, accessToken, userId});
-            } catch (err) {
+            accessToken = response?.data?.access_token;
+            setAuth({email, password, accessToken});
 
-            }
-            navigate('/dashboard');
         } catch (err) {
             if(!err?.response)
                 setErrMsg('No Server Response');

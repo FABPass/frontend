@@ -20,11 +20,12 @@ const App = () => {
     const {auth} = useContext(AuthContext);
 
     axios.interceptors.request.use(async request => {
-        // console.log("OVO JE ACCESS TOKEN: ");
-        // console.log(auth);
-        // request.headers = {
-        // 'Authorization': `Bearer ${auth.accessToken}`
-        // }
+        console.log("OVO JE ACCESS TOKEN")
+        console.log(auth)
+        request.headers = {
+        'Authorization': `Bearer ${auth.accessToken}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+        }
         return request;
         },
             error => {

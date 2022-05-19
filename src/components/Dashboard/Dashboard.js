@@ -23,6 +23,7 @@ const Dashboard = () => {
             } catch (err) {
 
             }
+            console.log("ucitan je dashboard")
         }
     })
 
