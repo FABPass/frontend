@@ -1,25 +1,24 @@
 import React from 'react';
 import "./Login.css";
-import {useRef, useState, useEffect, useContext} from 'react';
-import AuthContext from "../../context/AuthProvider";
+import {useRef, useState, useEffect} from 'react';
 import axios from "axios";
 import * as qs from 'qs'
 import { useNavigate } from "react-router-dom";
 import Logo from "../Logo/Logo";
 import {baseUrl} from "../../api/baseUrl";
+import {connect} from "react-redux";
 
 const LOGIN_URL = '/login';
-let accessToken = '';
-let renderCount = 0
 
-const Login = () => {
-    const {auth, setAuth} = useContext(AuthContext);
+const Login = (props) => {
     const emailRef = useRef();
     const errRef = useRef();
 
     const[email, setEmail] = useState('');
     const[password, setPassword] = useState('');
     const[errMsg, setErrMsg] = useState('');
+
+
 
     let navigate = useNavigate();
 
@@ -39,39 +38,17 @@ const Login = () => {
         setPassword(e.target.value);
     }
 
-    useEffect(() => {
-        const getUserId = async () => {
-            try{
-                console.log("OVO JE ACCESS TOKEN:")
-                console.log(auth)
-                const response = await axios.get(baseUrl + "/user?email=" + email);
-                const userId = response?.data?.id;
-                console.log("OVO VRATI REQUEST ZA USER ID: ");
-                console.log(JSON.stringify(response?.data));
-                console.log("OVO JE USER ID: " + userId);
-                if (renderCount++ === 1) {
-                    setAuth({email, password, accessToken, userId});
-                    navigate('/dashboard')
-                }
-            } catch (err) {
-
-            }
-        }
-        if (renderCount++ === 1)
-            getUserId()
-    }, [auth])
-
     const onBtnClick = async () => {
         try{
             const response = await axios.post(baseUrl + LOGIN_URL, qs.stringify({email, password}), {
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 }
             });
             console.log(JSON.stringify(response?.data));
-            accessToken = response?.data?.access_token;
-            setAuth({email, password, accessToken});
-
+            const accessToken = response?.data?.access_token;
+            props.changeUserInfo(email, password, accessToken);
+            navigate('/dashboard');
         } catch (err) {
             if(!err?.response)
                 setErrMsg('No Server Response');
@@ -110,4 +87,18 @@ const Login = () => {
     );
 };
 
-export default Login;
+const mapStateToProps = (state) => {
+    return {
+        accessToken: state.accessToken
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeUserInfo: (email, password, accessToken) => {
+            dispatch({type: 'CHANGE_USER_INFO', email: email, password: password, accessToken: accessToken})
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

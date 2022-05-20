@@ -1,30 +1,24 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {Card} from "react-bootstrap";
 import axios from "axios";
-import * as qs from "qs";
 import {baseUrl} from "../../api/baseUrl";
-import AuthContext from "../../context/AuthProvider";
+import {connect} from "react-redux";
 
 
-const Dashboard = () => {
-
-    const {auth, setAuth} = useContext(AuthContext);
+const Dashboard = (props) => {
 
     useEffect(() => {
+        console.log(props.accessToken);
         const getUserId = async () => {
             try{
-                const response = await axios.post(baseUrl + "/user", qs.stringify(auth.accessToken), {
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    }
-                });
+                const response = await axios.get(baseUrl + "/user?email=" + props.email);
                 const userId = response?.data?.id;
-
+                console.log(JSON.stringify(response?.data));
             } catch (err) {
 
             }
-            console.log("ucitan je dashboard")
         }
+        getUserId()
     })
 
     return (
@@ -49,4 +43,20 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+const mapStateToProps = (state) => {
+    return {
+        email: state.email,
+        password: state.password,
+        accessToken: state.accessToken
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeUserInfo: (email, password, accessToken) => {
+            dispatch({type: 'CHANGE_USER_INFO', email: email, password: password, accessToken: accessToken})
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
