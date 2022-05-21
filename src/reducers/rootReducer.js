@@ -3,6 +3,7 @@ const initState = {
 }
 
 const rootReducer = (state = initState, action) => {
+    console.log(action)
     if (action.type === 'CHANGE_USER_INFO') {
         return {
             ...state,

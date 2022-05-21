@@ -10,38 +10,39 @@ import {
     Route,
     Redirect,
 } from "react-router-dom";
-import axios from "axios";
 import {connect} from "react-redux";
-
+import {instance} from "./api/axiosConnection";
+import {useEffect} from "react";
+import axios from "axios";
 
 const App = (props) => {
 
-
-    axios.interceptors.request.use(async request => {
-        request.headers['Authorization'] = 'Bearer ' + props.accessToken;
-        return request;
-        },
-            error => {
-            Promise.reject(error)
+    useEffect(() => {
+        const requestInterceptor = ( request => {
+            request.headers['Authorization'] = 'Bearer ' + localStorage.getItem('accessToken');
+            return request;
         });
+        instance.interceptors.request.use(requestInterceptor)
+        return () => {axios.interceptors.request.eject(requestInterceptor)}
+    })
 
     return (
-        <Router>
-            <div>
-                <div className={"content"}>
-                    <Routes>
-                        <Route element={<WithoutNav/>}>
-                            <Route path={"/register"} element={<Register/>}/>
-                            <Route path={"/login"} element={<Login/>}/>
-                        </Route>
-                        <Route path={"/"} element={<Login/>}/>
-                        <Route element={<WithNav/>}>
-                            <Route path={"/dashboard"} element={<Dashboard/>}/>
-                        </Route>
-                    </Routes>
+            <Router>
+                <div>
+                    <div className={"content"}>
+                        <Routes>
+                            <Route element={<WithoutNav/>}>
+                                <Route path={"/register"} element={<Register/>}/>
+                                <Route path={"/login"} element={<Login/>}/>
+                            </Route>
+                            <Route path={"/"} element={<Login/>}/>
+                            <Route element={<WithNav/>}>
+                                <Route path={"/dashboard"} element={<Dashboard/>}/>
+                            </Route>
+                        </Routes>
+                    </div>
                 </div>
-            </div>
-        </Router>
+            </Router>
     );
 };
 

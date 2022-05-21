@@ -1,7 +1,7 @@
 import React from 'react';
 import "./Login.css";
 import {useRef, useState, useEffect} from 'react';
-import axios from "axios";
+import {instance} from "../../api/axiosConnection";
 import * as qs from 'qs'
 import { useNavigate } from "react-router-dom";
 import Logo from "../Logo/Logo";
@@ -40,7 +40,7 @@ const Login = (props) => {
 
     const onBtnClick = async () => {
         try{
-            const response = await axios.post(baseUrl + LOGIN_URL, qs.stringify({email, password}), {
+            const response = await instance.post(baseUrl + LOGIN_URL, qs.stringify({email, password}), {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
@@ -48,7 +48,8 @@ const Login = (props) => {
             console.log(JSON.stringify(response?.data));
             const accessToken = response?.data?.access_token;
             props.changeUserInfo(email, password, accessToken);
-            navigate('/dashboard');
+            localStorage.setItem('accessToken', accessToken);
+            navigate('/dashboard')
         } catch (err) {
             if(!err?.response)
                 setErrMsg('No Server Response');

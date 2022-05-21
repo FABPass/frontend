@@ -1,25 +1,26 @@
 import React, {useEffect} from 'react';
 import {Card} from "react-bootstrap";
-import axios from "axios";
+import {instance} from "../../api/axiosConnection";
 import {baseUrl} from "../../api/baseUrl";
 import {connect} from "react-redux";
 
+let brojac = 0
 
 const Dashboard = (props) => {
 
     useEffect(() => {
-        console.log(props.accessToken);
-        const getUserId = async () => {
+        brojac++;
+        console.log(brojac + ". poziv useEffecta");
+        (async () => {
             try{
-                const response = await axios.get(baseUrl + "/user?email=" + props.email);
+                const response = await instance.get(baseUrl + "/user?email=" + props.email);
                 const userId = response?.data?.id;
                 console.log(JSON.stringify(response?.data));
             } catch (err) {
 
             }
-        }
-        getUserId()
-    })
+        })()
+    }, [props])
 
     return (
         <div>
