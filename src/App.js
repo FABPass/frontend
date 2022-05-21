@@ -11,19 +11,38 @@ import {
     Redirect,
 } from "react-router-dom";
 import axios from "axios";
-import {connect} from "react-redux";
+import {baseUrl} from "./api/baseUrl";
 
 
-const App = (props) => {
+const App = () => {
 
 
     axios.interceptors.request.use(async request => {
-        request.headers['Authorization'] = 'Bearer ' + props.accessToken;
+        if (request.headers['Authorization'] == null)
+            request.headers['Authorization'] = 'Bearer ' + localStorage.getItem('accessToken');
         return request;
         },
             error => {
             Promise.reject(error)
         });
+
+    const onResponse = (response) => { return response}
+
+    const onResponseError = async error => {
+        if (error.response.data.message.indexOf("WT expired") >= 0) {
+            const rs = await axios.get(baseUrl + "/user/token/refresh", {
+                headers: {
+                    'Authorization': localStorage.getItem('refreshToken')
+                }
+            });
+            const accessToken = rs?.data?.access_token;
+            localStorage.setItem('accessToken', accessToken);
+        }
+        else
+            return Promise.reject(error);
+    }
+
+    axios.interceptors.response.use(onResponse, onResponseError);
 
     return (
         <Router>
@@ -45,10 +64,4 @@ const App = (props) => {
     );
 };
 
-const mapStateToProps = (state) => {
-    return {
-        accessToken: state.accessToken
-    }
-}
-
-export default connect(mapStateToProps)(App);
+export default App;

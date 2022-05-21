@@ -6,11 +6,10 @@ import * as qs from 'qs'
 import { useNavigate } from "react-router-dom";
 import Logo from "../Logo/Logo";
 import {baseUrl} from "../../api/baseUrl";
-import {connect} from "react-redux";
 
 const LOGIN_URL = '/login';
 
-const Login = (props) => {
+const Login = () => {
     const emailRef = useRef();
     const errRef = useRef();
 
@@ -38,6 +37,16 @@ const Login = (props) => {
         setPassword(e.target.value);
     }
 
+    const getUserId = async (email) => {
+        try{
+            const response = await axios.get(baseUrl + "/user?email=" + email);
+            const userId = response?.data?.id;
+            localStorage.setItem('userId', userId);
+        } catch (err) {
+
+        }
+    }
+
     const onBtnClick = async () => {
         try{
             const response = await axios.post(baseUrl + LOGIN_URL, qs.stringify({email, password}), {
@@ -45,9 +54,12 @@ const Login = (props) => {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
             });
-            console.log(JSON.stringify(response?.data));
             const accessToken = response?.data?.access_token;
-            props.changeUserInfo(email, password, accessToken);
+            const refreshToken = response?.data?.refresh_token;
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
+            localStorage.setItem('email', email);
+            await getUserId(email);
             navigate('/dashboard');
         } catch (err) {
             if(!err?.response)
@@ -87,18 +99,4 @@ const Login = (props) => {
     );
 };
 
-const mapStateToProps = (state) => {
-    return {
-        accessToken: state.accessToken
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        changeUserInfo: (email, password, accessToken) => {
-            dispatch({type: 'CHANGE_USER_INFO', email: email, password: password, accessToken: accessToken})
-        }
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;
