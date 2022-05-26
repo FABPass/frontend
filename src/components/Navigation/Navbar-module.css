@@ -1,0 +1,15 @@
+.navbar{
+    background-color: #96f19a !important;
+}
+
+a{
+    font-size: 20px !important;
+    border-radius: 10px;
+}
+
+a:hover{
+    color: #5e6060 !important;
+    opacity: 50%;
+    border-radius: 10px;
+
+}

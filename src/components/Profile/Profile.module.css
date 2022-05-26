@@ -13,7 +13,8 @@
 }
 
 .personal {
-    padding: 20px;
+    padding-top: 20px;
+    padding-bottom: 30px;
     margin-right: 15px;
     box-shadow: 5px 6px 6px 5px rgb(207,207,207);
     border-radius: 10px;
