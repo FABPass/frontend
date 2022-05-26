@@ -1,0 +1,68 @@
+.notificationWrapper {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 300px;
+}
+
+.notification {
+    box-shadow: 0 0 10px rgba(0,0,0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    animation: SlideLeft 0.4s;
+    animation-fill-mode: forwards;
+    width: 300px;
+    background-color: white !important;
+}
+
+@keyframes SlideLeft {
+    0% {
+        margin-left: 120%;
+    }
+
+    100% {
+        margin-left: 0;
+    }
+}
+
+@keyframes SlideRight {
+    0% {
+        margin-left: 0;
+    }
+
+    100% {
+        margin-left: 120%;
+    }
+}
+
+
+.notification.exit {
+    animation: SlideRight 0.4s;
+    animation-fill-mode: forwards;
+}
+
+.notification p {
+    margin: 0;
+    padding: 10px;
+}
+
+.notification .bar {
+    height: 10px;
+}
+
+.notification.success .bar {
+    background-color: #65d266;
+}
+
+.notification.error .bar {
+    background-color: red;
+}
+
+.iconSuccess{
+    color: #65d266;
+}
+
+.iconError{
+    color: red;
+}

@@ -1,9 +1,9 @@
 import React from 'react';
-import "./Login.css";
+import styles from "./Login.module.css";
 import {useRef, useState, useEffect} from 'react';
 import axios from "axios";
 import * as qs from 'qs'
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Logo from "../Logo/Logo";
 import {baseUrl} from "../../api/baseUrl";
 
@@ -75,25 +75,29 @@ const Login = () => {
     }
 
     return (
-        <div id="loginform">
+        <div id={styles.loginform}>
             <Logo loggedIn={"notLoggedIn"}/>
-            <h2 id="headerTitle">Login</h2>
+            <h2 id={styles.headerTitle}>Login</h2>
             <div>
-                <div className="row">
+                <div className={styles.row}>
                     <label>Email</label>
                     <input type="text" placeholder="Enter your username" ref={emailRef} onChange={onEmailChange} value={email} required/>
                 </div>
-                <div className="row">
+                <div className={styles.row}>
                     <label>Password</label>
                     <input type="password" placeholder="Enter your password" onChange={onPwdChange} value={password} required/>
                 </div>
-                <p ref={errRef} aria-live="assertive" id={"errMsg"}>{errMsg}</p>
-                <div id="button" className="row">
+                <p ref={errRef} aria-live="assertive" id={styles.errMsg}>{errMsg}</p>
+                <div id={styles.button}className={styles.row}>
                     <button onClick={onBtnClick}>Log in</button>
                 </div>
             </div>
-            <div id="logRegSwitch">
-                <a href={window.location.protocol + "//" + window.location.host + "/register"}>Don't have an account? Sign up!</a>
+            <div id={styles.logRegSwitch}>
+                <Link to={"/register"}>Don't have an account? Sign up!</Link>
+            </div>
+            <div className={styles.logForgPwSwitch}>
+                <Link to={"/forgotPassword"}>Forgot password</Link>
+                {/*<a href={window.location.protocol + "//" + window.location.host + "/forgotPassword"}>Forgot password</a>*/}
             </div>
         </div>
     );

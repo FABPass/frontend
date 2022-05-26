@@ -1,14 +1,15 @@
 import React from 'react';
-import "./Register.css";
+import styles from "./Register.module.css";
 
 import PasswordStrengthBar from "react-password-strength-bar";
 import Logo from "../Logo/Logo";
+import {Link} from "react-router-dom";
 
 //const {password} = this.state;
 
 const Register = () => {
     return (
-        <div id="registerform">
+        <div id={styles.registerform}>
             <Logo loggedIn={"notLoggedIn"}/>
             <FormHeader title="Sign up" />
             <Form />
@@ -19,7 +20,7 @@ const Register = () => {
 
 
 const FormHeader = props => (
-    <h2 id="headerTitle">{props.title}</h2>
+    <h2 id={styles.headerTitle}>{props.title}</h2>
 );
 
 
@@ -37,21 +38,21 @@ const Form = props => (
 );
 
 const FormButton = props => (
-    <div id="button" className="row">
+    <div id={styles.button} className={styles.row}>
         <button>{props.title}</button>
     </div>
 );
 
 const FormInput = props => (
-    <div className="row">
+    <div className={styles.row}>
         <label>{props.description}</label>
         <input type={props.type} placeholder={props.placeholder}/>
     </div>
 );
 
 const OtherMethods = props => (
-    <div id="logRegSwitch">
-        <a href={window.location.protocol + "//" + window.location.host + "/login"}>Already have an account? Sign in!</a>
+    <div id={styles.logRegSwitch}>
+        <Link to={"/login"}>Already have an account? Sign in!</Link>
     </div>
 );
 

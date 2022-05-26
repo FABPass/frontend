@@ -12,12 +12,18 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 import {baseUrl} from "./api/baseUrl";
+import {Profile} from "./components/Profile/Profile";
+import {ForgotPassword} from "./components/ForgotPassword/ForgotPassword";
+import {ChangePassword} from "./components/ChangePassword/ChangePassword";
 
 
 const App = () => {
 
 
     axios.interceptors.request.use(async request => {
+        if(request.url.startsWith("http://localhost:8084/user/forgotPassword")) return request;
+        if(request.url.startsWith("http://localhost:8084/user/changePassword")) return request;
+
         if (request.headers['Authorization'] == null)
             request.headers['Authorization'] = 'Bearer ' + localStorage.getItem('accessToken');
         return request;
@@ -52,10 +58,13 @@ const App = () => {
                         <Route element={<WithoutNav/>}>
                             <Route path={"/register"} element={<Register/>}/>
                             <Route path={"/login"} element={<Login/>}/>
+                            <Route path={"/forgotPassword"} element={<ForgotPassword/>}/>
+                            <Route path={"/changePassword/*"} element={<ChangePassword/>}/>
                         </Route>
                         <Route path={"/"} element={<Login/>}/>
                         <Route element={<WithNav/>}>
                             <Route path={"/dashboard"} element={<Dashboard/>}/>
+                            <Route path={"/profile"} element={<Profile/>}/>
                         </Route>
                     </Routes>
                 </div>

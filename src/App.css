@@ -1,6 +1,7 @@
 body {
     font-family: "work sans";
     background-size: auto;
-    background: linear-gradient(to right bottom, #299958, #4fa972, #6fba8b, #8ecaa5, #acdabe) no-repeat fixed;
+    /*background: linear-gradient(to right bottom, #299958, #4fa972, #6fba8b, #8ecaa5, #acdabe) no-repeat fixed;*/
+    background-color: #d6ffd7 !important;
     margin: 0;
 }

@@ -114,8 +114,13 @@
 
 #logRegSwitch {
     text-align: center;
-    padding-bottom: 2rem;
     margin-top: 1.5rem;
+}
+
+.logForgPwSwitch{
+    text-align: center;
+    padding-bottom: 2rem;
+    margin-top: 5px;
 }
 
 #errMsg{
