@@ -29,7 +29,7 @@ const WithNav = () => {
                                 <Link className="nav-link" to={"/profile"}>Profile</Link>
                             </li>
                             <li class="nav-item">
-                                <Link className="nav-link" to={"#pricing"}>Create New</Link>
+                                <Link className="nav-link" to={"/createDataItem"}>Create New</Link>
                             </li>
 
                         </ul>
