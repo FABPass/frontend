@@ -15,6 +15,7 @@ import {baseUrl} from "./api/baseUrl";
 import {Profile} from "./components/Profile/Profile";
 import {ForgotPassword} from "./components/ForgotPassword/ForgotPassword";
 import {ChangePassword} from "./components/ChangePassword/ChangePassword";
+import {DataItem} from "./components/DataItem/DataItem";
 
 
 const App = () => {
@@ -65,6 +66,7 @@ const App = () => {
                         <Route element={<WithNav/>}>
                             <Route path={"/dashboard"} element={<Dashboard/>}/>
                             <Route path={"/profile"} element={<Profile/>}/>
+                            <Route path={"/createDataItem"} element={<DataItem/>}/>
                         </Route>
                     </Routes>
                 </div>

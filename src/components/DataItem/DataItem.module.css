@@ -1,0 +1,67 @@
+.wrapper {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.6);
+    /*width: 40%;*/
+}
+
+.itemwrapper {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 80% !important;
+}
+
+.itemdbtn {
+    border: none;
+    outline: none;
+    height: 50px !important;
+    width: 60% !important;
+    background-color: #82f186 !important;
+    color: white ;
+    border-radius: 10px !important;
+    font-weight: bold !important;
+}
+
+.itemdbtn:hover {
+    background-color: #a0f8a2 !important;
+    border: none;
+    color: black;
+}
+
+.createdbtn {
+    border: none;
+    outline: none;
+    height: 50px !important;
+    width: 30% !important;
+    background-color: #82f186 !important;
+    color: white ;
+    border-radius: 10px !important;
+    font-weight: bold !important;
+}
+
+.createdbtn:hover {
+    background-color: #a0f8a2 !important;
+    border: none;
+    color: black;
+}
+
+.groupbtn {
+    border: none;
+    outline: none;
+    height: 50px !important;
+    /*width: 60% !important;*/
+    background-color: #82f186 !important;
+    color: white ;
+    border-radius: 10px !important;
+    font-weight: bold !important;
+}
+
+.groupbtn:hover {
+    background-color: #a0f8a2 !important;
+    border: none;
+    color: black;
+}
+
+.dataGroup{
+    height: 30px;
+    width: 188px;
+}
