@@ -10,3 +10,5 @@ export const createDataItem = baseUrl + '/dataItem';
 
 export const createDataGroup = baseUrl + '/dataGroup'; //TODO dodati ovu rutu
 export const getUserDataGroups = baseUrl + '/usersDataGroups';
+
+export const getUserDataItems = baseUrl + '/userDataItems?userId=';

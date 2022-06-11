@@ -1,0 +1,25 @@
+.optionsBtn {
+    min-height: 20px;
+    min-width: 20px;
+    position: absolute;
+    border: none;
+    background-color: transparent;
+    top: 6%;
+}
+
+#editBtn {
+    background-image:url('../../resources/edit_icon.png');
+    background-size:cover;
+
+    right: 15%;
+}
+
+#deleteBtn {
+    background-image:url('../../resources/delete_icon.png');
+    background-size: cover;
+    right: 3%;
+}
+
+.optionsBtn:hover {
+    opacity: 0.8;
+}
