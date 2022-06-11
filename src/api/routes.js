@@ -1,10 +1,12 @@
-export const profileInformation = 'http://localhost:8084/user?email=';
-export const saveProfileInformation = 'http://localhost:8084/user';
+import {baseUrl} from "./baseUrl";
 
-export const forgotPassword = 'http://localhost:8084/user/forgotPassword?email=';
-export const changePassword = 'http://localhost:8084/user/changePassword/';
+export const profileInformation = baseUrl + '/user?email=';
+export const saveProfileInformation = baseUrl + '/user';
 
-export const createDataItem = 'http://localhost:8084/dataItem';
+export const forgotPassword = baseUrl + '/user/forgotPassword?email=';
+export const changePassword = baseUrl + '/user/changePassword/';
 
-export const createDataGroup = 'http://localhost:8084/dataGroup'; //TODO dodati ovu rutu
-export const getUserDataGroups = 'http://localhost:8084/usersDataGroups';
+export const createDataItem = baseUrl + '/dataItem';
+
+export const createDataGroup = baseUrl + '/dataGroup'; //TODO dodati ovu rutu
+export const getUserDataGroups = baseUrl + '/usersDataGroups';
