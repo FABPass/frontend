@@ -83,10 +83,10 @@ export const GeneratePassword = () => {
             </h3>
             <div className={"row pt-3"}>
                 <div className={"col"}>
-                    <input data-testid={"genpw-copy-input"} type={"text"} placeholder={"Copy generated text"} value={pwtext} onChange={(e)=> setPwtext(e.target.value)}/>
+                    <input type={"text"} placeholder={"Copy generated text"} value={pwtext} onChange={(e)=> setPwtext(e.target.value)}/>
                 </div>
                 <div className={`col ${styles.endalign}`}>
-                    <button data-testid={"genpw-copy-btn"} className={styles.copybtn} onClick={handleCopyPassword}>{copied ? "Copied" : "Copy password"}</button>
+                    <button className={styles.copybtn} onClick={handleCopyPassword}>{copied ? "Copied" : "Copy password"}</button>
                 </div>
             </div>
             <div className={"row pt-4"}>
@@ -94,7 +94,7 @@ export const GeneratePassword = () => {
                     <div>Password length</div>
                 </div>
                 <div className={`col ${styles.endalign}`}>
-                    <input data-testid={"genpw-pwlength-input"} type={"number"} min={"5"} max={"30"} className={styles.numberstyle} value={length} onChange={handleChangeLength}/>
+                    <input type={"number"} min={"5"} max={"30"} className={styles.numberstyle} value={length} onChange={handleChangeLength}/>
                 </div>
             </div>
             <div className={"row pt-2"}>
@@ -130,7 +130,7 @@ export const GeneratePassword = () => {
                 </div>
             </div>
             <div className={"text-center pt-5 mb-3"}>
-                <button data-testid={"genpw-generatepw-btn"} className={styles.passwordbtn} onClick={generatePassword}>Generate password</button>
+                <button className={styles.passwordbtn} onClick={generatePassword}>Generate password</button>
             </div>
         </div>
     )

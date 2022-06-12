@@ -6,12 +6,15 @@ import {DataItemCard} from "./DataItemCard";
 import {useNotification} from "../Notifications/NotificationProvider";
 import {Request} from "../../api/Request";
 import {useNavigate} from "react-router-dom";
-import {getUserDataGroups, profileInformation} from "../../api/routes";
+import {createDataGroup, createDataItem, getUserDataGroups, profileInformation} from "../../api/routes";
 import {DropdownButton} from "react-bootstrap";
 import DropdownItem from "react-bootstrap/DropdownItem";
+import CryptoJS from "crypto-js";
 
 
 export const DataItem = () => {
+
+    var CryptoJS = require("crypto-js");
 
     const [number, setNumber] = useState("");
     const [security, setSecurity] = useState("");
@@ -24,20 +27,22 @@ export const DataItem = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
-    const [id, setId] = useState("")
+    const [userId, setUserId] = useState("")
+    const [userPassword, setUserPassword] = useState("")
     const [dataGroups, setDataGroups] = useState(null)
 
     const [selectedGroup, setSelectedGroup] = useState(null)
-    const [newGroup, setNewGroup] = useState(null)
+    const [newGroup, setNewGroup] = useState("")
 
     useEffect(() => {
         Request(profileInformation+localStorage.getItem('email'),"GET")
             .then((response) =>{
                 const user = response.data
-                setId(user.id);
-                Request(getUserDataGroups+"?userId="+id,"GET")
+                setUserId(user.id);
+                Request(getUserDataGroups+user.id,"GET")
                     .then((resp) => {
                         setDataGroups(resp.data)
+                        setSelectedGroup(resp.data[0])
                     })
             })
 
@@ -91,29 +96,103 @@ export const DataItem = () => {
     const handleCreate = (e) => {
         e.preventDefault()
 
+        const d = {
+            "name":name,
+            "description":username,
+            "value":CryptoJS.AES.encrypt(JSON.stringify(password), userPassword).toString(),
+            "dataTypeId":{
+                "name":"password"
+            },
+            "userId":userId,
+            "dataGroupId":selectedGroup
+        }
+        const dataTypePassword = {
+            "name":"password"
+        }
+        const dataTypeCard = {
+            "name":"payment_card"
+        }
         if(seeLogin && name.length>0 && username.length>0 && password.length>0){
-            Request()
-                .then(response => {
-                    if(response.status ===200){
-                        handleNewNotification("SUCCESS","Successfully created")
-                        navigate("/dashboard")
-                    }
-                })
-                .catch(err => {
-                    handleNewNotification("ERROR", "Problem with server, try later")
-                })
+
+            if(newGroup.length==0){ // kreiraj data item sa izabranom grupom iz dropdown
+
+                Request(createDataItem,"POST",d)
+                    .then(response => {
+                        if(response.status ===200){
+                            handleNewNotification("SUCCESS","Successfully created")
+                            navigate("/dashboard")
+                        }
+                    })
+                    .catch(err => {
+                        handleNewNotification("ERROR", "Problem with server, try later")
+                    })
+            }
+            else if(newGroup.length>=3){
+                const g ={
+                    "name":newGroup,
+                    "userId":userId
+                }
+                Request(createDataGroup, "POST", g)
+                    .then(res => {
+                        d.dataGroupId = res.data
+                        Request(createDataItem, "POST", d)
+                            .then(res => {
+                                handleNewNotification("SUCCESS","Successfully created")
+                                navigate("/dashboard")
+                            })
+                            .catch(err => {
+                                handleNewNotification("ERROR", "Error while creating new data group")
+                            })
+                    })
+                    .catch(err => {
+                        handleNewNotification("ERROR", "Error while creating new data item")
+                    })
+
+            }
+            else handleNewNotification("ERROR", "Data group name should be 3 or more characters")
+
         }
         else if(seeCard && number.length>0 && security.length>0 && pin.length>0){
-            Request()
-                .then(response => {
-                    if(response.status ===200){
-                        handleNewNotification("SUCCESS","Successfully created")
-                        navigate("/dashboard")
-                    }
-                })
-                .catch(err => {
-                    handleNewNotification("ERROR", "Problem with server, try later")
-                })
+            d.dataTypeId = dataTypeCard
+            d.name = number
+            d.description = CryptoJS.AES.encrypt(JSON.stringify(security), userPassword).toString()
+            d.value = CryptoJS.AES.encrypt(JSON.stringify(pin), userPassword).toString()
+            if(newGroup.length == 0){ // kreiraj data item sa izabranom grupom iz dropdown
+
+                Request(createDataItem,"POST",d)
+                    .then(response => {
+                        if(response.status ===200){
+                            handleNewNotification("SUCCESS","Successfully created")
+                            navigate("/dashboard")
+                        }
+                    })
+                    .catch(err => {
+                        handleNewNotification("ERROR", "Problem with server, try later")
+                    })
+            }
+            else if(newGroup.length >= 3){
+                const g ={
+                    "name":newGroup,
+                    "userId":userId
+                }
+                Request(createDataGroup, "POST", g)
+                    .then(res => {
+                        d.dataGroupId = res.data
+                        Request(createDataItem, "POST", d)
+                            .then(res => {
+                                handleNewNotification("SUCCESS","Successfully created")
+                                navigate("/dashboard")
+                            })
+                            .catch(err => {
+                                handleNewNotification("ERROR", "Error while creating new data group")
+                            })
+                    })
+                    .catch(err => {
+                        handleNewNotification("ERROR", "Error while creating new data item")
+                    })
+
+            }
+            else handleNewNotification("ERROR", "Data group name should be 3 or more characters")
         }
         else{
             handleNewNotification("ERROR", "Complete fields")
@@ -121,20 +200,6 @@ export const DataItem = () => {
 
     }
 
-    const groups = [
-        {
-            "id":"1",
-            "name":"Login podaci"
-        },
-        {
-            "id":"2",
-            "name":"Kartice"
-        },
-        {
-            "id":"2",
-            "name":"Neka grupa"
-        }
-    ]
 
     return(
         <div className={"container-fluid mt-4 ms-2 mb-2 me-2"}>
@@ -149,11 +214,22 @@ export const DataItem = () => {
                                 <h4>Choose group for data item or</h4>
                             </div>
                             <div className={"col text-end me-5 pe-5"}>
-                                <select className={styles.dataGroup} onChange={(e)=> setSelectedGroup(e.target.value)}>
+                                <select className={styles.dataGroup}
+                                        onChange={(e)=>
+                                            setSelectedGroup(
+                                                dataGroups.filter((s) => {
+                                                    if (s.name === e.target.value) return s;
+                                                })[0]
+                                            )
+                                        }
+                                >
                                     {/*TODO koristi ovdje grupe iz dataGroups sto dobijes slanjem requesta*/}
-                                    {groups.map((item)=>{
-                                        return <option>{item.name}</option>
-                                    })}
+                                    { dataGroups!=null ?
+                                        dataGroups.map((item)=>{
+                                        return <option value={item.name}>{item.name}</option>
+                                    }) :
+                                        <option>Loading</option>
+                                    }
                                 </select>
                             </div>
 
