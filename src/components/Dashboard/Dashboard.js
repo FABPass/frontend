@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {getUserDataItems} from "../../api/routes";
-import './Dashboard.css';
+import './Dashboard.module.css';
 import CryptoJS from "crypto-js";
 import DataItemCard from "./DataItemCard";
 

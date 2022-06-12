@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Card} from "react-bootstrap";
-import button from "bootstrap/js/src/button";
+import styles from "./Dashboard.module.css";
+import { confirm } from "react-confirm-box";
 
 const DataItemCard = (props) => {
 
@@ -10,16 +11,28 @@ const DataItemCard = (props) => {
         setPasswordShown(!passwordShown);
     }
 
+
+    const deleteDataItem = () => {
+        console.log("Sad bi se izbrisao data item");
+    }
+
+    const onDeleteClick = async () => {
+        const result = await confirm("Are you sure you want to delete the selected data item?");
+        if (result)
+            deleteDataItem();
+    };
+
     return (
         <Card
             style={{ width: '18rem' }}
             className="mb-2"
+            id={styles.card}
         >
-            <Card.Header>
+            <Card.Header id={styles.cardHeader}>
                 {
                     props.dataType === "password" ?
                         <div>
-                            <i className="bi bi-key"/>
+                            <i className={`bi bi-key ${styles.typeIcon}`}/>
                             {props.name}
                         </div> :
                         <div>
@@ -27,8 +40,8 @@ const DataItemCard = (props) => {
                             Credit Card
                         </div>
                 }
-                <button id={"editBtn"} className={"optionsBtn"}/>
-                <button id={"deleteBtn"} className={"optionsBtn"}/>
+                <button id={styles.editBtn} className={styles.optionsBtn}/>
+                <button id={styles.deleteBtn} className={styles.optionsBtn} onClick={onDeleteClick}/>
             </Card.Header>
             <Card.Body>
                 <Card.Text>
