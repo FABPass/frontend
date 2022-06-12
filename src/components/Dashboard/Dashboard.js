@@ -11,16 +11,17 @@ const Dashboard = () => {
     const [dataItems, setDataItems] = useState(null);
 
     const decryptPassword = (encryptedPass) => {
-        let bytes = CryptoJS.AES.decrypt(encryptedPass, localStorage.getItem('encPass'));
-        let decryptedPass = bytes.toString(CryptoJS.enc.Utf8);
-        return decryptedPass;
+        let bytes = CryptoJS.AES.decrypt(encryptedPass, "aesEncryptionKey");
+        return bytes.toString(CryptoJS.enc.Utf8);
     }
 
     async function getUsersDataItems() {
         try {
             const response = await axios.get(getUserDataItems + localStorage.getItem('userId'));
             let items = response?.data.map((item, index) => {
-                // item.value = decryptPassword(item.value);
+                item.value = decryptPassword(item.value);
+                if (item.dataTypeId.name === "payment_card")
+                    item.description = decryptPassword(item.description);
                 return item;
             });
             setDataItems(items);

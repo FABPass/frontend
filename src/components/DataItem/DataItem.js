@@ -99,7 +99,7 @@ export const DataItem = () => {
         const d = {
             "name":name,
             "description":username,
-            "value":CryptoJS.AES.encrypt(JSON.stringify(password), userPassword).toString(),
+            "value":CryptoJS.AES.encrypt(password, "aesEncryptionKey").toString(),
             "dataTypeId":{
                 "name":"password"
             },
@@ -155,8 +155,8 @@ export const DataItem = () => {
         else if(seeCard && number.length>0 && security.length>0 && pin.length>0){
             d.dataTypeId = dataTypeCard
             d.name = number
-            d.description = CryptoJS.AES.encrypt(JSON.stringify(security), userPassword).toString()
-            d.value = CryptoJS.AES.encrypt(JSON.stringify(pin), userPassword).toString()
+            d.description = CryptoJS.AES.encrypt(security, "aesEncryptionKey").toString()
+            d.value = CryptoJS.AES.encrypt(pin, "aesEncryptionKey").toString()
             if(newGroup.length == 0){ // kreiraj data item sa izabranom grupom iz dropdown
 
                 Request(createDataItem,"POST",d)
