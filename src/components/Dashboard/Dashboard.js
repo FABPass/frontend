@@ -1,24 +1,35 @@
 import React, {useEffect, useState} from 'react';
-import {Card} from "react-bootstrap";
 import axios from "axios";
 import {getUserDataItems} from "../../api/routes";
-import button from "bootstrap/js/src/button";
 import './Dashboard.css';
+import CryptoJS from "crypto-js";
+import DataItemCard from "./DataItemCard";
 
 
 const Dashboard = () => {
 
     const [dataItems, setDataItems] = useState(null);
 
+    const decryptPassword = (encryptedPass) => {
+        let bytes = CryptoJS.AES.decrypt(encryptedPass, localStorage.getItem('encPass'));
+        let decryptedPass = bytes.toString(CryptoJS.enc.Utf8);
+        return decryptedPass;
+    }
+
     async function getUsersDataItems() {
         try {
             const response = await axios.get(getUserDataItems + localStorage.getItem('userId'));
-            setDataItems(response?.data);
+            let items = response?.data.map((item, index) => {
+                // item.value = decryptPassword(item.value);
+                return item;
+            });
+            setDataItems(items);
         }
         catch (e) {
 
         }
     }
+
 
     useEffect(() => {
         getUsersDataItems();
@@ -27,26 +38,10 @@ const Dashboard = () => {
     return (
         <div>
             {
-                dataItems?.map((item, index) =>{
-                    return (
-                        <Card
-                            style={{ width: '18rem' }}
-                            className="mb-2"
-                            key={`${index}-${item.name}`}
-                        >
-                            <Card.Header>
-                                {item.name}
-                                <button id={"editBtn"} className={"optionsBtn"}/>
-                                <button id={"deleteBtn"} className={"optionsBtn"}/>
-                            </Card.Header>
-                            <Card.Body>
-                                <Card.Title>{item.value}</Card.Title>
-                                <Card.Text>
-                                    {item.description}
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    );
+                dataItems?.map((item, index) => {
+                    return <DataItemCard name={item.name} value={item.value}
+                                         description={item.description} key={`${index}-${item.name}`}
+                                         dataType={item.dataTypeId.name}/>
                 })
             }
         </div>

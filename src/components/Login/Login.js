@@ -37,11 +37,15 @@ const Login = () => {
         setPassword(e.target.value);
     }
 
-    const getUserId = async (email) => {
+    const getUserInfo = async (email) => {
         try{
             const response = await axios.get(baseUrl + "/user?email=" + email);
             const userId = response?.data?.id;
+            const name = response?.data?.name;
+            const encPass = response?.data?.password.password;
             localStorage.setItem('userId', userId);
+            localStorage.setItem('encPass', encPass);
+            localStorage.setItem('name', name);
         } catch (err) {
 
         }
@@ -59,7 +63,7 @@ const Login = () => {
             localStorage.setItem('accessToken', accessToken);
             localStorage.setItem('refreshToken', refreshToken);
             localStorage.setItem('email', email);
-            await getUserId(email);
+            await getUserInfo(email);
             navigate('/dashboard');
         } catch (err) {
             if(!err?.response)

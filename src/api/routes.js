@@ -1,7 +1,6 @@
-export const saveProfileInformationWithPw = 'http://localhost:8084/user/update?pw=';
-
 import {baseUrl} from "./baseUrl";
 
+export const saveProfileInformationWithPw = 'http://localhost:8084/user/update?pw=';
 
 export const profileInformation = baseUrl + '/user?email=';
 export const saveProfileInformation = baseUrl + '/user';

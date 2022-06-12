@@ -17,7 +17,7 @@ const WithNav = () => {
                     <Logo loggedIn={"loggedIn"}/>
                     <span className="navbar-brand text-secondary fw-bold">
                       <i className="bi bi-lock-fill"/>
-                        FABPass
+                        {'Welcome, ' + localStorage.getItem('name')}
                     </span>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false"
