@@ -1,27 +1,54 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Card} from "react-bootstrap";
+import axios from "axios";
+import {getUserDataItems} from "../../api/routes";
+import button from "bootstrap/js/src/button";
+import './Dashboard.css';
 
 
 const Dashboard = () => {
 
+    const [dataItems, setDataItems] = useState(null);
+
+    async function getUsersDataItems() {
+        try {
+            const response = await axios.get(getUserDataItems + localStorage.getItem('userId'));
+            setDataItems(response?.data);
+        }
+        catch (e) {
+
+        }
+    }
+
+    useEffect(() => {
+        getUsersDataItems();
+    }, []);
+
     return (
         <div>
-            <Card
-                bg={"variant".toLowerCase()}
-                key={"variant"}
-                text={'black'}
-                style={{ width: '18rem' }}
-                className="mb-2"
-            >
-                <Card.Header>Header</Card.Header>
-                <Card.Body>
-                    <Card.Title>{"variant"} Card Title </Card.Title>
-                    <Card.Text>
-                        Some quick example text to build on the card title and make up the
-                        bulk of the card's content.
-                    </Card.Text>
-                </Card.Body>
-            </Card>
+            {
+                dataItems?.map((item, index) =>{
+                    return (
+                        <Card
+                            style={{ width: '18rem' }}
+                            className="mb-2"
+                            key={`${index}-${item.name}`}
+                        >
+                            <Card.Header>
+                                {item.name}
+                                <button id={"editBtn"} className={"optionsBtn"}/>
+                                <button id={"deleteBtn"} className={"optionsBtn"}/>
+                            </Card.Header>
+                            <Card.Body>
+                                <Card.Title>{item.value}</Card.Title>
+                                <Card.Text>
+                                    {item.description}
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    );
+                })
+            }
         </div>
     );
 };

@@ -5,33 +5,40 @@ import {Outlet} from "react-router";
 import styles from "./Navbar-module.css"
 
 const WithNav = () => {
+
+    const onLogoutClick = () => {
+        localStorage.clear();
+    };
+
     return (
         <div>
             <nav className={`navbar navbar-expand-md navbar-light pt-3 pb-0 ${styles.background}`}>
                 <div className="container-lg">
                     <Logo loggedIn={"loggedIn"}/>
                     <span className="navbar-brand text-secondary fw-bold">
-                      <i className="bi bi-lock-fill"></i>
+                      <i className="bi bi-lock-fill"/>
                         FABPass
                     </span>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false"
                             aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
+                        <span className="navbar-toggler-icon"/>
                     </button>
 
-                    <div class="collapse navbar-collapse justify-content-end align-center" id="main-nav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
+                    <div className="collapse navbar-collapse justify-content-end align-center" id="main-nav">
+                        <ul className="navbar-nav">
+                            <li className="nav-item">
                                 <Link className={"nav-link"} to={"/dashboard"}>Dashboard</Link>
                             </li>
-                            <li class="nav-item">
+                            <li className="nav-item">
                                 <Link className="nav-link" to={"/profile"}>Profile</Link>
                             </li>
-                            <li class="nav-item">
+                            <li className="nav-item">
                                 <Link className="nav-link" to={"/createDataItem"}>Create New</Link>
                             </li>
-
+                            <li className="nav-item">
+                                <Link className="nav-link" to={"/login"} onClick={onLogoutClick}>Logout</Link>
+                            </li>
                         </ul>
                     </div>
                 </div>
