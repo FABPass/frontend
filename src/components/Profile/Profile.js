@@ -1,7 +1,7 @@
 import styles from "./Profile.module.css"
 import {useEffect, useState} from "react";
 import {Request} from "../../api/Request";
-import {profileInformation, saveProfileInformation} from "../../api/routes";
+import {profileInformation, saveProfileInformation, saveProfileInformationWithPw} from "../../api/routes";
 import {useNotification} from "../Notifications/NotificationProvider";
 
 
@@ -91,12 +91,13 @@ export const Profile = () => {
                 newData.phone = phone
                 newData.password.password = newPw
 
-                Request(saveProfileInformation,"PUT", newData)
+                Request(saveProfileInformationWithPw+oldPw,"PUT", newData)
                     .then((resp) => {
                         if(resp && resp.status=== 200 ) handleNewNotification("SUCCESS", "Profile information updated")
                     } )
                     .catch(err => {
-                        handleNewNotification("ERROR", "Phone or email is already in use!")
+                        if(err.response.data.message === "Incorrect password") handleNewNotification("ERROR", "Incorrect password!")
+                        else handleNewNotification("ERROR", "Phone or email is already in use!")
                     })
             }
             else handleNewNotification("ERROR", "Enter the same new password and repeat password")
@@ -129,13 +130,13 @@ export const Profile = () => {
                                 <span className={"input-group-text"}>
                                     <i className="bi bi-person-fill text-secondary"></i>
                                 </span>
-                                <input type={"text"} data-testid={"p-fname-input"} className={"form-control"} value={firstName} onChange={(e)=>setFirstName(e.target.value)}/>
+                                <input type={"text"} className={"form-control"} value={firstName} onChange={(e)=>setFirstName(e.target.value)}/>
                             </div>
                             <div className={"col input-group"}>
                                 <span className={"input-group-text"}>
                                     <i className="bi bi-person-fill text-secondary"></i>
                                 </span>
-                                <input type={"text"} data-testid={"p-lname-input"} className={"form-control"} value={lastName} onChange={(e)=>setLastName(e.target.value)}/>
+                                <input type={"text"} className={"form-control"} value={lastName} onChange={(e)=>setLastName(e.target.value)}/>
                             </div>
                         </div>
                         <div className={"row mt-3"}>
@@ -151,13 +152,13 @@ export const Profile = () => {
                                 <span className={"input-group-text"}>
                                     <i className="bi bi-envelope-fill text-secondary"></i>
                                 </span>
-                                <input type={"text"} data-testid={"p-email-input"} className={"form-control"} value={email} onChange={(e)=>setEmail(e.target.value)}/>
+                                <input type={"text"} className={"form-control"} value={email} onChange={(e)=>setEmail(e.target.value)}/>
                             </div>
                             <div className={"col input-group"}>
                                 <span className={"input-group-text"}>
                                     <i className="bi bi-telephone-fill text-secondary"></i>
                                 </span>
-                                <input type={"text"} data-testid={"p-phone-input"} className={"form-control"} value={phone} onChange={(e)=>setPhone(e.target.value)}/>
+                                <input type={"text"} className={"form-control"} value={phone} onChange={(e)=>setPhone(e.target.value)}/>
                             </div>
                         </div>
 
@@ -172,7 +173,7 @@ export const Profile = () => {
                                 <span className={"input-group-text"}>
                                     <i className="bi bi-unlock-fill text-secondary"></i>
                                 </span>
-                                <input type={"password"} data-testid={"p-oldpw-input"} className={"form-control"} value={oldPw} onChange={(e)=>{setOldPw(e.target.value)}}/>
+                                <input type={"password"} className={"form-control"} value={oldPw} onChange={(e)=>{setOldPw(e.target.value)}}/>
                             </div>
                         </div>
                         <div className={"row mt-2"}>
@@ -183,7 +184,7 @@ export const Profile = () => {
                                 <span className={"input-group-text"}>
                                     <i className="bi bi-lock-fill text-secondary"></i>
                                 </span>
-                                <input type={"password"} data-testid={"p-newpw-input"} className={"form-control"} value={newPw} onChange={(e)=>{setNewPw(e.target.value)}}/>
+                                <input type={"password"} className={"form-control"} value={newPw} onChange={(e)=>{setNewPw(e.target.value)}}/>
                             </div>
                         </div>
                         <div className={"row mt-2"}>
@@ -194,17 +195,17 @@ export const Profile = () => {
                                 <span className={"input-group-text"}>
                                     <i className="bi bi-lock-fill text-secondary"></i>
                                 </span>
-                                <input type={"password"} data-testid={"p-repeatnewpw-input"} className={"form-control"} value={newPwRepeat} onChange={(e)=>{setNewPwRepeat(e.target.value)}}/>
+                                <input type={"password"} className={"form-control"} value={newPwRepeat} onChange={(e)=>{setNewPwRepeat(e.target.value)}}/>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className={`row ${styles.center} mt-3`}>
                     <div className={"col"}>
-                        <button data-testid={"p-savebtn"} className={styles.passwordbtn} onClick={submitButton}>Save</button>
+                        <button className={styles.passwordbtn} onClick={submitButton}>Save</button>
                     </div>
                     <div className={"col"}>
-                        <button data-testid={"p-cancelbtn"} className={styles.passwordbtn} onClick={cancelButton}>Cancel</button>
+                        <button className={styles.passwordbtn} onClick={cancelButton}>Cancel</button>
                     </div>
                 </div>
             </form>
