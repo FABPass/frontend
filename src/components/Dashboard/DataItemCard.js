@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import {Card} from "react-bootstrap";
 import styles from "./Dashboard.module.css";
 import { confirm } from "react-confirm-box";
+import EditDataItem from "./EditDataItem/EditDataItem";
 
 const DataItemCard = (props) => {
 
     const [passwordShown, setPasswordShown] = useState(false);
+    const [editPopup, setEditPopup] = useState(false);
 
     const onEyeClick = () => {
         setPasswordShown(!passwordShown);
@@ -22,6 +24,9 @@ const DataItemCard = (props) => {
             deleteDataItem();
     };
 
+    const onEditClick = () => {
+        setEditPopup(true);
+    };
     return (
         <Card
             style={{ width: '18rem' }}
@@ -40,7 +45,7 @@ const DataItemCard = (props) => {
                             Credit Card
                         </div>
                 }
-                <button id={styles.editBtn} className={styles.optionsBtn}/>
+                <button id={styles.editBtn} className={styles.optionsBtn} onClick={onEditClick}/>
                 <button id={styles.deleteBtn} className={styles.optionsBtn} onClick={onDeleteClick}/>
             </Card.Header>
             <Card.Body>
@@ -77,6 +82,7 @@ const DataItemCard = (props) => {
                     {props.description}
                 </Card.Text>
             </Card.Body>
+            <EditDataItem trigger={editPopup} setTrigger={setEditPopup}/>
         </Card>
     );
 };

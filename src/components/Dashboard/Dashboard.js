@@ -4,6 +4,7 @@ import {getUserDataItems} from "../../api/routes";
 import './Dashboard.module.css';
 import CryptoJS from "crypto-js";
 import DataItemCard from "./DataItemCard";
+import 'reactjs-popup/dist/index.css';
 
 
 const Dashboard = () => {
