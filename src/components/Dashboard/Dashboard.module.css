@@ -28,16 +28,15 @@
     box-shadow: 7px 7px 7px 7px rgb(207 207 207);
     border-radius: 15%;
     background-color: #f2fff5;
+    min-width: 310px;
 }
 
-.typeIcon {
-    min-height: 30px;
-    min-width: 30px;
-}
+
 
 #cardHeader {
     background: transparent;
 }
+
 
 button {
     border: none;

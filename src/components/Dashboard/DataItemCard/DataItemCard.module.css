@@ -1,0 +1,21 @@
+.inline {
+    display: inline;
+}
+
+.margins > * {
+    margin: 2%;
+}
+
+.cardLabels {
+    font-weight: bold;
+    color: #65d266;
+}
+
+.pswdField {
+    border: none;
+    border-radius: 5%;
+}
+
+.cardHeader > * > * {
+    margin-right: 10%;
+}

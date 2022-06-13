@@ -3,7 +3,7 @@ import {Card} from "react-bootstrap";
 import dashboardStyles from "../Dashboard.module.css";
 import { confirm } from "react-confirm-box";
 import EditDataItem from "../EditDataItem/EditDataItem";
-import cardStyles from "./DataItemCard.css";
+import cardStyles from "./DataItemCard.module.css";
 
 const DataItemCard = (props) => {
 
@@ -34,14 +34,14 @@ const DataItemCard = (props) => {
             className="mb-2"
             id={dashboardStyles.card}
         >
-            <Card.Header id={dashboardStyles.cardHeader}>
+            <Card.Header id={dashboardStyles.cardHeader} className={cardStyles.cardHeader}>
                 {
                     props.dataType === "password" ?
-                        <div>
-                            <i className={`bi bi-key ${dashboardStyles.typeIcon}`}/>
+                        <div className={cardStyles.cardLabels}>
+                            <i className={'bi bi-key'}/>
                             {props.name}
                         </div> :
-                        <div>
+                        <div className={cardStyles.cardLabels}>
                             <i className="bi bi-cash-coin"/>
                             {props.name}
                         </div>
@@ -53,31 +53,33 @@ const DataItemCard = (props) => {
                 <Card.Text>
                     {
                         passwordShown ?
-                            <div>
+                            <div className={cardStyles.margins}>
                                 {
                                     props.dataType === "payment_card" ?
-                                        <i>Pin:</i> :
-                                        null
+                                        <i className={cardStyles.cardLabels}>Pin:</i> :
+                                        <i className={cardStyles.cardLabels}>Pass:</i>
                                 }
-                                <input type={"text"} readOnly={"readonly"} value={props.value}/>
+                                <input className={cardStyles.pswdField} type={"text"} readOnly={"readonly"} value={props.value}/>
                                 <i className="bi bi-eye-slash" onClick={onEyeClick}/>
                             </div>:
-                            <div>
+                            <div className={cardStyles.margins}>
                                 {
                                     props.dataType === "payment_card" ?
-                                        <i>Pin:</i> :
-                                        null
+                                        <i className={cardStyles.cardLabels}>Pin:</i> :
+                                        <i className={cardStyles.cardLabels}>Pass:</i>
                                 }
-                                <input type={"password"} readOnly={"readonly"} value={props.value}/>
+                                <input className={cardStyles.pswdField} type={"password"} readOnly={"readonly"} value={props.value}/>
                                 <i className="bi bi-eye" onClick={onEyeClick}/>
                             </div>
                     }
-                    {
-                        props.dataType === "payment_card" ?
-                            <label>Security code:</label> :
-                            null
-                    }
-                    {props.description}
+                    <div className={cardStyles.margins}>
+                        {
+                            props.dataType === "payment_card" ?
+                                <i className={cardStyles.cardLabels}>Security code:</i> :
+                                <i className={cardStyles.cardLabels}>Email:</i>
+                        }
+                        {props.description}
+                    </div>
                 </Card.Text>
             </Card.Body>
             <EditDataItem trigger={editPopup} setTrigger={setEditPopup}/>
