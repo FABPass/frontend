@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Card} from "react-bootstrap";
-import styles from "./Dashboard.module.css";
+import styles from "../Dashboard.module.css";
 import { confirm } from "react-confirm-box";
-import EditDataItem from "./EditDataItem/EditDataItem";
+import EditDataItem from "../EditDataItem/EditDataItem";
 
 const DataItemCard = (props) => {
 

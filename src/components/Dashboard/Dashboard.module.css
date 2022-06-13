@@ -43,3 +43,11 @@ button {
     border: none;
 }
 
+#tableId {
+    display: block;
+}
+
+#tableId td {
+    display: inline-block;
+    padding: 2%;
+}

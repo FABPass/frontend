@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {getUserDataItems} from "../../api/routes";
-import './Dashboard.module.css';
+import styles from './Dashboard.module.css';
 import CryptoJS from "crypto-js";
-import DataItemCard from "./DataItemCard";
+import DataItemCard from "./DataItemCard/DataItemCard.js";
 import 'reactjs-popup/dist/index.css';
 
 
@@ -38,15 +38,18 @@ const Dashboard = () => {
     }, []);
 
     return (
-        <div>
+        <table id={styles.tableId}>
             {
                 dataItems?.map((item, index) => {
-                    return <DataItemCard name={item.name} value={item.value}
-                                         description={item.description} key={`${index}-${item.name}`}
-                                         dataType={item.dataTypeId.name}/>
+                    console.log(index)
+                    return <td>
+                        <DataItemCard name={item.name} value={item.value}
+                                      description={item.description} key={`${index}-${item.name}`}
+                                      dataType={item.dataTypeId.name}/>
+                    </td>
                 })
             }
-        </div>
+        </table>
     );
 };
 
