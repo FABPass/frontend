@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {Card} from "react-bootstrap";
-import styles from "../Dashboard.module.css";
+import dashboardStyles from "../Dashboard.module.css";
 import { confirm } from "react-confirm-box";
 import EditDataItem from "../EditDataItem/EditDataItem";
+import cardStyles from "./DataItemCard.css";
 
 const DataItemCard = (props) => {
 
@@ -31,45 +32,42 @@ const DataItemCard = (props) => {
         <Card
             style={{ width: '18rem' }}
             className="mb-2"
-            id={styles.card}
+            id={dashboardStyles.card}
         >
-            <Card.Header id={styles.cardHeader}>
+            <Card.Header id={dashboardStyles.cardHeader}>
                 {
                     props.dataType === "password" ?
                         <div>
-                            <i className={`bi bi-key ${styles.typeIcon}`}/>
+                            <i className={`bi bi-key ${dashboardStyles.typeIcon}`}/>
                             {props.name}
                         </div> :
                         <div>
                             <i className="bi bi-cash-coin"/>
-                            Credit Card
+                            {props.name}
                         </div>
                 }
-                <button id={styles.editBtn} className={styles.optionsBtn} onClick={onEditClick}/>
-                <button id={styles.deleteBtn} className={styles.optionsBtn} onClick={onDeleteClick}/>
+                <button id={dashboardStyles.editBtn} className={dashboardStyles.optionsBtn} onClick={onEditClick}/>
+                <button id={dashboardStyles.deleteBtn} className={dashboardStyles.optionsBtn} onClick={onDeleteClick}/>
             </Card.Header>
             <Card.Body>
                 <Card.Text>
                     {
-                        props.dataType === "payment_card" ?
-                            <div>
-                                <label>Card number: </label>
-                                {props.name}
-                            </div> :
-                            null
-                    }
-                    {
-                        props.dataType === "payment_card" ?
-                            <label>Pin:</label> :
-                            null
-                    }
-                    {
                         passwordShown ?
                             <div>
+                                {
+                                    props.dataType === "payment_card" ?
+                                        <i>Pin:</i> :
+                                        null
+                                }
                                 <input type={"text"} readOnly={"readonly"} value={props.value}/>
                                 <i className="bi bi-eye-slash" onClick={onEyeClick}/>
                             </div>:
                             <div>
+                                {
+                                    props.dataType === "payment_card" ?
+                                        <i>Pin:</i> :
+                                        null
+                                }
                                 <input type={"password"} readOnly={"readonly"} value={props.value}/>
                                 <i className="bi bi-eye" onClick={onEyeClick}/>
                             </div>
