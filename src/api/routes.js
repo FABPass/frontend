@@ -18,3 +18,5 @@ export const getUserDataItems = baseUrl + '/userDataItems?userId=';
 
 export const deleteDIRoute = baseUrl + '/deleteDataItem/';
 
+export const registerRoute = baseUrl + '/user';
+

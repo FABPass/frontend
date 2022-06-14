@@ -1,59 +1,103 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from "./Register.module.css";
 
-import PasswordStrengthBar from "react-password-strength-bar";
 import Logo from "../Logo/Logo";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import axios from "axios";
+import {registerRoute} from "../../api/routes";
 
-//const {password} = this.state;
 
 const Register = () => {
+
+    const[firstName, setFirstName] = useState("");
+    const[lastName, setLastName] = useState("");
+    const[email, setEmail] = useState("");
+    const[phone, setPhone] = useState("");
+    const[password, setPassword] = useState("");
+    const[confirmPassword, setConfirmPassword] = useState("");
+
+    const navigate = useNavigate();
+
+    function validateInputFields() {
+        let errorMsg = "";
+        if (firstName === "")
+            errorMsg += "Empty first name!\n";
+        if (lastName === "")
+            errorMsg += "Empty last name!\n";
+        if (email === "" || ! /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/.test(email))
+            errorMsg += "Invalid email address!\n";
+        if (phone === "" || ! /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(phone))
+            errorMsg += "Invalid phone number!\n";
+        if (password === "")
+            errorMsg += "Empty password!\n";
+        if(password !== confirmPassword)
+            errorMsg += "Password fields do not match!\n";
+        return errorMsg;
+    }
+
+    const registerClick = async () => {
+        let errorMsg = validateInputFields();
+        if (errorMsg !== "") {
+            alert(errorMsg);
+            return;
+        }
+        try {
+            await axios.post(registerRoute, {
+                "name":firstName,
+                "surname":lastName,
+                "email":email,
+                "phone":phone,
+                "password":{
+                    "password":password
+                }
+            });
+            navigate('/login');
+        } catch (e) {
+
+        }
+    };
+
     return (
         <div id={styles.registerform}>
             <Logo loggedIn={"notLoggedIn"}/>
-            <FormHeader title="Sign up" />
-            <Form />
-            <OtherMethods />
+            <h2 id={styles.headerTitle}>Sign up</h2>
+            <div className={styles.row}>
+                <label>First name</label>
+                <input type="text" placeholder="Enter your first name" onChange={(e) => setFirstName(e.target.value)}/>
+            </div>
+            <div className={styles.row}>
+                <label>Last name</label>
+                <input type="text" placeholder="Enter your last name" onChange={(e) => setLastName(e.target.value)}/>
+            </div>
+            <div className={styles.row}>
+                <label>Email</label>
+                <input type="text" placeholder="Enter your email" onChange={(e) => setEmail(e.target.value)}/>
+            </div>
+            <div className={styles.row}>
+                <label>Phone</label>
+                <input type="tel" placeholder="Enter your phone number" onChange={(e) => setPhone(e.target.value)}/>
+            </div>
+            <div className={styles.row}>
+                <label>Password</label>
+                <input type="password" placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)}/>
+            </div>
+            <div className={styles.row}>
+                <label>Confirm password</label>
+                <input type="password" placeholder="Enter your password again" onChange={(e) => setConfirmPassword(e.target.value)}/>
+                {
+                    password === confirmPassword ? null : <label id={styles.passwordMatching}>Password fields do not match!</label>
+                }
+            </div>
+            <div id={styles.button} className={styles.row}>
+                <button onClick={registerClick}>Sign up</button>
+            </div>
+            <div id={styles.logRegSwitch}>
+                <Link to={"/login"}>Already have an account? Sign in!</Link>
+            </div>
         </div>
     );
 };
 
 
-const FormHeader = props => (
-    <h2 id={styles.headerTitle}>{props.title}</h2>
-);
-
-
-const Form = props => (
-    <div>
-        <FormInput description="First name" placeholder="Enter your first name" type="text" />
-        <FormInput description="Last name" placeholder="Enter your last name" type="text" />
-        <FormInput description="Email" placeholder="Enter your email" type="text" />
-        <FormInput description="Phone" placeholder="Enter your phone number" type="tel" />
-        <FormInput description="Password" placeholder="Enter your password" type="password"/>
-        <FormInput description="Confirm password" placeholder="Enter your password again" type="password"/>
-        {/*<PasswordStrengthBar password={password}/>*/}
-        <FormButton title="Sign up"/>
-    </div>
-);
-
-const FormButton = props => (
-    <div id={styles.button} className={styles.row}>
-        <button>{props.title}</button>
-    </div>
-);
-
-const FormInput = props => (
-    <div className={styles.row}>
-        <label>{props.description}</label>
-        <input type={props.type} placeholder={props.placeholder}/>
-    </div>
-);
-
-const OtherMethods = props => (
-    <div id={styles.logRegSwitch}>
-        <Link to={"/login"}>Already have an account? Sign in!</Link>
-    </div>
-);
 
 export default Register;
