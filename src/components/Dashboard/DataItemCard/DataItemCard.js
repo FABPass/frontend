@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {Card} from "react-bootstrap";
 import dashboardStyles from "../Dashboard.module.css";
-import { confirm } from "react-confirm-box";
 import EditDataItem from "../EditDataItem/EditDataItem";
 import cardStyles from "./DataItemCard.module.css";
 
+
 const DataItemCard = (props) => {
+
 
     const [passwordShown, setPasswordShown] = useState(false);
     const [editPopup, setEditPopup] = useState(false);
@@ -13,17 +14,6 @@ const DataItemCard = (props) => {
     const onEyeClick = () => {
         setPasswordShown(!passwordShown);
     }
-
-
-    const deleteDataItem = () => {
-        console.log("Sad bi se izbrisao data item");
-    }
-
-    const onDeleteClick = async () => {
-        const result = await confirm("Are you sure you want to delete the selected data item?");
-        if (result)
-            deleteDataItem();
-    };
 
     const onEditClick = () => {
         setEditPopup(true);
@@ -47,7 +37,7 @@ const DataItemCard = (props) => {
                         </div>
                 }
                 <button id={dashboardStyles.editBtn} className={dashboardStyles.optionsBtn} onClick={onEditClick}/>
-                <button id={dashboardStyles.deleteBtn} className={dashboardStyles.optionsBtn} onClick={onDeleteClick}/>
+                <button id={dashboardStyles.deleteBtn} className={dashboardStyles.optionsBtn} onClick={() => props.onDeleteClick(props.id)}/>
             </Card.Header>
             <Card.Body>
                 <Card.Text>
