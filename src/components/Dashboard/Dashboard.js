@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import {deleteDIRoute, getUserDataItems} from "../../api/routes";
+import {deleteDIRoute, editDIRoute, getUserDataItems} from "../../api/routes";
 import styles from './Dashboard.module.css';
 import CryptoJS from "crypto-js";
 import DataItemCard from "./DataItemCard/DataItemCard.js";
@@ -32,6 +32,24 @@ const Dashboard = () => {
 
         }
     }
+
+    const editDataItemClick = async (id, name, description, value, dataGroup) => {
+        try {
+            await axios.patch(editDIRoute + id, {
+                "name":name,
+                "description":description,
+                "value":CryptoJS.AES.encrypt(value, "aesEncryptionKey").toString(),
+                "dataGroupId": {
+                    "name":dataGroup.name
+                }
+            });
+            handleNewNotification("SUCCESS","Data item successfully edited!");
+            setRerender(rerender + 1);
+        }
+        catch (e) {
+
+        }
+    };
 
     const onDeleteClick = async (id) => {
         const result = await confirm("Are you sure you want to delete the selected data item?");
@@ -75,6 +93,7 @@ const Dashboard = () => {
                         <DataItemCard id={item.id} name={item.name} value={item.value}
                                       description={item.description} key={`${index}-${item.name}`}
                                       dataType={item.dataTypeId.name} dataGroup={item.dataGroupId.name}
+                                      onEditClick={editDataItemClick}
                                       onDeleteClick={onDeleteClick}/>
                     </td>
                 })

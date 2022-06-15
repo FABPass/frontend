@@ -1,24 +1,24 @@
 import React, {useEffect, useState} from 'react';
 import styles from './EditDataItem.module.css';
 import {Request} from "../../../api/Request";
-import {editDIRoute, getUserDataGroups} from "../../../api/routes";
-import axios from "axios";
+import {getUserDataGroups} from "../../../api/routes";
 
 const EditDataItem = (props) => {
+
 
     const[name, setName] = useState(props.name);
     const[description, setDescription] = useState(props.description);
     const[value, setValue] = useState(props.value);
-    const[dataType, setDataType] = useState(props.dataType);
     const[dataGroup, setDataGroup] = useState(props.dataGroup);
-    const [dataGroups, setDataGroups] = useState(null)
+    const[dataGroups, setDataGroups] = useState(null);
+    const[rerender, setRerender] = useState(1);
 
     useEffect(() => {
         Request(getUserDataGroups+localStorage.getItem('userId'),"GET")
             .then((resp) => {
                 setDataGroups(resp.data)
             })
-    }, []);
+    }, [rerender]);
 
 
     const onNameChange = (e) => {
@@ -33,20 +33,10 @@ const EditDataItem = (props) => {
         setValue(e.target.value);
     };
 
-    const editDataItemClick = async () => {
-        try {
-            await axios.patch(editDIRoute + props.id, {
-                "name":name,
-                "description":description,
-                "value":value,
-                "dataGroupId": {
-                    "name":dataGroup
-                }
-            });
-        }
-        catch (e) {
-
-        }
+    const manageEdit = () => {
+        props.onEditClick(props.id, name, description, value, dataGroup);
+        props.setTrigger(false);
+        setRerender(rerender + 1);
     };
 
     return (
@@ -55,7 +45,7 @@ const EditDataItem = (props) => {
             <div className={styles.popupInner}>
                 <div className={styles.itemwrapper}>
                     <h3 id={styles.headline}>Edit data item</h3>
-                    <div className={"row"}>
+                    <div className={`row ${styles.rowSpan}` }>
                         <div className={"col"}>
                             {
                                 props.dataType === "password" ?
@@ -68,7 +58,7 @@ const EditDataItem = (props) => {
                                    placeholder={"Input name/card number"} onChange={onNameChange}/>
                         </div>
                     </div>
-                    <div className={"row"}>
+                    <div className={`row ${styles.rowSpan}` }>
                         <div className={"col"}>
                             {
                                 props.dataType === "password" ?
@@ -81,7 +71,7 @@ const EditDataItem = (props) => {
                                    placeholder={"Input email/security code"} onChange={onDescriptionChange}/>
                         </div>
                     </div>
-                    <div className={"row"}>
+                    <div className={`row ${styles.rowSpan}` }>
                         <div className={"col"}>
                             {
                                 props.dataType === "password" ?
@@ -94,32 +84,34 @@ const EditDataItem = (props) => {
                                    placeholder={"Input password/pin"} onChange={onValueChange}/>
                         </div>
                     </div>
-                    <div className={"row"}>
+                    <div className={`row ${styles.rowSpan}` }>
                         <div className={"col"}>
                             <div>Data group</div>
-                            <div className={"col text-end me-5 pe-5"}>
-                                <select className={styles.dataGroup}
-                                        onChange={(e)=>
-                                            setDataGroup(
-                                                dataGroups.filter((s) => {
-                                                    if (s.name === e.target.value) return s;
-                                                })[0]
-                                            )
-                                        }
-                                >
-                                    {/*TODO koristi ovdje grupe iz dataGroups sto dobijes slanjem requesta*/}
-                                    { dataGroups!=null ?
-                                        dataGroups.map((item)=>{
-                                            return <option value={item.name}>{item.name}</option>
-                                        }) :
-                                        <option>Loading</option>
+                        </div>
+                        <div className={"col"}>
+                            <select className={styles.dataGroup}
+                                    onChange={(e)=>
+                                        setDataGroup(
+                                            dataGroups.filter((s) => {
+                                                if (s.name === e.target.value) return s;
+                                            })[0]
+                                        )
                                     }
-                                </select>
-                            </div>
+                                    defaultValue={dataGroup}
+                            >
+                                { dataGroups!=null ?
+                                    dataGroups.map((item)=>{
+                                        let ret = item.name === dataGroup.name ? <option value={item.name}>{item.name}</option> :
+                                            <option value={item.name}>{item.name}</option>
+                                        return ret
+                                    }) :
+                                    <option>Loading</option>
+                                }
+                            </select>
                         </div>
                     </div>
                 </div>
-                <button className={styles.editFormBtn} id={styles.saveBtn} onClick={editDataItemClick}>Save</button>
+                <button className={styles.editFormBtn} id={styles.saveBtn} onClick={manageEdit}>Save</button>
                 <button className={styles.editFormBtn} id={styles.closeBtn} onClick={() => props.setTrigger(false)}>Close</button>
                 {props.children}
             </div>

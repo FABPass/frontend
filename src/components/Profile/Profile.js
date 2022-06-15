@@ -55,7 +55,6 @@ export const Profile = () => {
 
 
         if(firstName === '') {
-            console.log("First name: ", firstName)
             handleNewNotification("ERROR", "First name shouldn't be empty")
         }
         else if (lastName === '') handleNewNotification("ERROR", "Last name shouldn't be empty")

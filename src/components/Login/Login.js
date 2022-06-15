@@ -16,7 +16,6 @@ const Login = () => {
 
     const[email, setEmail] = useState('');
     const[password, setPassword] = useState('');
-    const[errMsg, setErrMsg] = useState('');
 
     const dispatch = useNotification()
 
@@ -32,10 +31,6 @@ const Login = () => {
     useEffect(() => {
         emailRef.current.focus();
     }, [])
-
-    useEffect(() => {
-        setErrMsg('');
-    }, [email, password])
 
     const onEmailChange = (e) => {
         setEmail(e.target.value);
@@ -75,14 +70,6 @@ const Login = () => {
             handleNewNotification("SUCCESS","Successfully logged in")
             navigate('/dashboard');
         } catch (err) {
-            if(!err?.response)
-                setErrMsg('No Server Response');
-            else if (err.response?.status === 400)
-                setErrMsg('No Server Response');
-            else if (err.response?.status === 401)
-                setErrMsg('Incorrect email or password!');
-            else
-                setErrMsg('Login failed');
             handleNewNotification("ERROR","Incorrect email or password!")
         }
         errRef.current.focus();
@@ -101,8 +88,7 @@ const Login = () => {
                     <label>Password</label>
                     <input type="password" placeholder="Enter your password" onChange={onPwdChange} value={password} required/>
                 </div>
-                <p ref={errRef} aria-live="assertive" id={styles.errMsg}>{errMsg}</p>
-                <div id={styles.button}className={styles.row}>
+                <div id={styles.button} className={styles.row}>
                     <button onClick={onBtnClick}>Log in</button>
                 </div>
             </div>

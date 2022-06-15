@@ -32,7 +32,6 @@ export const ChangePassword = () => {
         const pathname = window.location.pathname;
 
         const token = pathname.substring(pathname.lastIndexOf('/')+1)
-        console.log(token)
 
         if(pw1 === pw2) {
             setSuccess(true);
