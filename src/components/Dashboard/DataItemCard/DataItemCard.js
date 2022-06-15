@@ -7,7 +7,6 @@ import cardStyles from "./DataItemCard.module.css";
 
 const DataItemCard = (props) => {
 
-
     const [passwordShown, setPasswordShown] = useState(false);
     const [editPopup, setEditPopup] = useState(false);
 
@@ -72,7 +71,7 @@ const DataItemCard = (props) => {
                     </div>
                 </Card.Text>
             </Card.Body>
-            <EditDataItem trigger={editPopup} setTrigger={setEditPopup}/>
+            <EditDataItem {...props} trigger={editPopup} setTrigger={setEditPopup}/>
         </Card>
     );
 };

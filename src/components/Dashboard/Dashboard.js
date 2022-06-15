@@ -63,7 +63,8 @@ const Dashboard = () => {
                     return <td>
                         <DataItemCard id={item.id} name={item.name} value={item.value}
                                       description={item.description} key={`${index}-${item.name}`}
-                                      dataType={item.dataTypeId.name} onDeleteClick={onDeleteClick}/>
+                                      dataType={item.dataTypeId.name} dataGroup={item.dataGroupId.name}
+                                      onDeleteClick={onDeleteClick}/>
                     </td>
                 })
             }
