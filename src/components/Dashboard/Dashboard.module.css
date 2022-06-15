@@ -31,12 +31,9 @@
     min-width: 310px;
 }
 
-
-
 #cardHeader {
     background: transparent;
 }
-
 
 button {
     border: none;
@@ -49,4 +46,20 @@ button {
 #tableId td {
     display: inline-block;
     padding: 2%;
+}
+
+.groupFilter {
+    position: relative;
+    display: block;
+    border: none;
+    width: 20%;
+    height: 40px;
+    font-size: 18px;
+    color: #60666d;
+    margin-top: 3%;
+    margin-left: 2%;
+}
+
+.disabled {
+    font-style: italic;
 }

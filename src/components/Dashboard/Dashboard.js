@@ -1,17 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import {deleteDIRoute, editDIRoute, getUserDataItems} from "../../api/routes";
+import {deleteDIRoute, editDIRoute, getUserDataGroups, getUserDataItems} from "../../api/routes";
 import styles from './Dashboard.module.css';
 import CryptoJS from "crypto-js";
 import DataItemCard from "./DataItemCard/DataItemCard.js";
 import 'reactjs-popup/dist/index.css';
 import {confirm} from "react-confirm-box";
 import {useNotification} from "../Notifications/NotificationProvider";
+import {Request} from "../../api/Request";
 
 
 const Dashboard = () => {
 
-    const[rerender, setRerender] = useState(0);
+    const [rerender, setRerender] = useState(0);
+    const [dataGroups, setDataGroups] = useState(null);
+    const [dataItems, setDataItems] = useState(null);
+    const [allDataItems, setAllDataItems] = useState(null);
+
 
     const dispatch = useNotification();
 
@@ -57,7 +62,6 @@ const Dashboard = () => {
             await deleteDataItem(id);
     };
 
-    const [dataItems, setDataItems] = useState(null);
 
     const decryptPassword = (encryptedPass) => {
         let bytes = CryptoJS.AES.decrypt(encryptedPass, "aesEncryptionKey");
@@ -74,6 +78,7 @@ const Dashboard = () => {
                 return item;
             });
             setDataItems(items);
+            setAllDataItems(items);
         }
         catch (e) {
 
@@ -82,23 +87,58 @@ const Dashboard = () => {
 
 
     useEffect(() => {
-        getUsersDataItems();
+        Request(getUserDataGroups+localStorage.getItem('userId'),"GET")
+            .then((resp) => {
+                setDataGroups(resp.data);
+                getUsersDataItems();
+            })
     }, [rerender]);
 
+    const filterDataItems = (e) => {
+        if (e === "All")
+            setDataItems(allDataItems);
+        else
+            setDataItems(allDataItems.filter(s => {
+                console.log(s);
+                if (s.dataGroupId.name === e) return s;
+            }))
+    }
+
     return (
-        <table id={styles.tableId}>
-            {
-                dataItems?.map((item, index) => {
-                    return <td>
-                        <DataItemCard id={item.id} name={item.name} value={item.value}
-                                      description={item.description} key={`${index}-${item.name}`}
-                                      dataType={item.dataTypeId.name} dataGroup={item.dataGroupId.name}
-                                      onEditClick={editDataItemClick}
-                                      onDeleteClick={onDeleteClick}/>
-                    </td>
-                })
-            }
-        </table>
+        <div>
+            <select className={styles.groupFilter}
+                    onChange={(e)=>
+                        // setSelectedFilter(
+                        //     dataGroups.filter((s) => {
+                        //         if (s.name === e.target.value) return s;
+                        //     })[0]
+                        // )
+                        filterDataItems(e.target.value)
+                    }
+            >
+                <option disabled selected className={styles.disabled}>Filter by group...</option>
+                <option>All</option>
+                { dataGroups!=null ?
+                    dataGroups.map((item)=>{
+                        return <option value={item.name}>{item.name}</option>
+                    }) :
+                    <option>Loading</option>
+                }
+            </select>
+            <table id={styles.tableId}>
+                {
+                    dataItems?.map((item, index) => {
+                        return <td>
+                            <DataItemCard id={item.id} name={item.name} value={item.value}
+                                          description={item.description} key={`${index}-${item.name}`}
+                                          dataType={item.dataTypeId.name} dataGroup={item.dataGroupId.name}
+                                          onEditClick={editDataItemClick}
+                                          onDeleteClick={onDeleteClick}/>
+                        </td>
+                    })
+                }
+            </table>
+        </div>
     );
 };
 
