@@ -3,6 +3,7 @@ import Logo from "../Logo/Logo";
 import {Link} from "react-router-dom";
 import {Outlet} from "react-router";
 import styles from "./Navbar-module.css"
+import {Export, exportToJson} from "../../api/Export";
 
 const WithNav = () => {
 
@@ -35,6 +36,9 @@ const WithNav = () => {
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" to={"/createDataItem"}>Create New</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to={"/dashboard"} onClick={exportToJson}>Export</Link>
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" to={"/login"} onClick={onLogoutClick}>Logout</Link>
