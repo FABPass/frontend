@@ -5,6 +5,7 @@ import Logo from "../Logo/Logo";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {registerRoute} from "../../api/routes";
+import {useNotification} from "../Notifications/NotificationProvider";
 
 
 const Register = () => {
@@ -17,6 +18,15 @@ const Register = () => {
     const[confirmPassword, setConfirmPassword] = useState("");
 
     const navigate = useNavigate();
+
+    const dispatch = useNotification()
+
+    const handleNewNotification = (status, message) => {
+        dispatch({
+            type: status,
+            message: message,
+        })
+    }
 
     function validateInputFields() {
         let errorMsg = "";
@@ -38,7 +48,8 @@ const Register = () => {
     const registerClick = async () => {
         let errorMsg = validateInputFields();
         if (errorMsg !== "") {
-            alert(errorMsg);
+            // alert(errorMsg);
+            handleNewNotification("ERROR", errorMsg)
             return;
         }
         try {
@@ -51,9 +62,10 @@ const Register = () => {
                     "password":password
                 }
             });
+            handleNewNotification("SUCCESS", "Successfully registered")
             navigate('/login');
         } catch (e) {
-
+            handleNewNotification("ERROR", "Email or phone already in use")
         }
     };
 

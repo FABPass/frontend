@@ -6,6 +6,7 @@ import * as qs from 'qs'
 import {Link, useNavigate} from "react-router-dom";
 import Logo from "../Logo/Logo";
 import {baseUrl} from "../../api/baseUrl";
+import {useNotification} from "../Notifications/NotificationProvider";
 
 const LOGIN_URL = '/login';
 
@@ -17,7 +18,14 @@ const Login = () => {
     const[password, setPassword] = useState('');
     const[errMsg, setErrMsg] = useState('');
 
+    const dispatch = useNotification()
 
+    const handleNewNotification = (status, message) => {
+        dispatch({
+            type: status,
+            message: message,
+        })
+    }
 
     let navigate = useNavigate();
 
@@ -64,6 +72,7 @@ const Login = () => {
             localStorage.setItem('refreshToken', refreshToken);
             localStorage.setItem('email', email);
             await getUserInfo(email);
+            handleNewNotification("SUCCESS","Successfully logged in")
             navigate('/dashboard');
         } catch (err) {
             if(!err?.response)
@@ -74,6 +83,7 @@ const Login = () => {
                 setErrMsg('Incorrect email or password!');
             else
                 setErrMsg('Login failed');
+            handleNewNotification("ERROR","Incorrect email or password!")
         }
         errRef.current.focus();
     }
