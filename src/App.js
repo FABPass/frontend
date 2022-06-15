@@ -16,6 +16,7 @@ import {Profile} from "./components/Profile/Profile";
 import {ForgotPassword} from "./components/ForgotPassword/ForgotPassword";
 import {ChangePassword} from "./components/ChangePassword/ChangePassword";
 import {DataItem} from "./components/DataItem/DataItem";
+import {Export} from "./api/Export";
 
 
 const App = () => {
