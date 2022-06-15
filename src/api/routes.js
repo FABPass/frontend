@@ -20,3 +20,5 @@ export const deleteDIRoute = baseUrl + '/deleteDataItem/';
 
 export const registerRoute = baseUrl + '/user';
 
+export const editDIRoute = baseUrl + '/dataItem/';
+

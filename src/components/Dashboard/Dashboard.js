@@ -6,15 +6,26 @@ import CryptoJS from "crypto-js";
 import DataItemCard from "./DataItemCard/DataItemCard.js";
 import 'reactjs-popup/dist/index.css';
 import {confirm} from "react-confirm-box";
+import {useNotification} from "../Notifications/NotificationProvider";
 
 
 const Dashboard = () => {
 
     const[rerender, setRerender] = useState(0);
 
+    const dispatch = useNotification();
+
+    const handleNewNotification = (status, message) => {
+        dispatch({
+            type: status,
+            message: message,
+        })
+    }
+
     const deleteDataItem = async (id) => {
         try {
             await axios.delete('' + deleteDIRoute + id);
+            handleNewNotification("SUCCESS","Data item successfully deleted!");
             setRerender(rerender + 1);
         }
         catch (e) {

@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import styles from './EditDataItem.module.css';
 import {Request} from "../../../api/Request";
-import {getUserDataGroups} from "../../../api/routes";
+import {editDIRoute, getUserDataGroups} from "../../../api/routes";
+import axios from "axios";
 
 const EditDataItem = (props) => {
 
@@ -32,10 +33,20 @@ const EditDataItem = (props) => {
         setValue(e.target.value);
     };
 
-    const editDataItemClick = () => {
-        console.log(name);
-        console.log(description);
-        console.log(value);
+    const editDataItemClick = async () => {
+        try {
+            await axios.patch(editDIRoute + props.id, {
+                "name":name,
+                "description":description,
+                "value":value,
+                "dataGroupId": {
+                    "name":dataGroup
+                }
+            });
+        }
+        catch (e) {
+
+        }
     };
 
     return (

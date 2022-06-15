@@ -17,6 +17,9 @@ const DataItemCard = (props) => {
     const onEditClick = () => {
         setEditPopup(true);
     };
+
+
+
     return (
         <Card
             style={{ width: '18rem' }}
