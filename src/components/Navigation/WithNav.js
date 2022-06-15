@@ -3,13 +3,37 @@ import Logo from "../Logo/Logo";
 import {Link} from "react-router-dom";
 import {Outlet} from "react-router";
 import styles from "./Navbar-module.css"
-import {Export, exportToJson} from "../../api/Export";
+import {exportToJson} from "../../api/Export";
+import {checkExpiredPasswords} from "../../api/routes";
+import {Request} from "../../api/Request";
+import {useNotification} from "../Notifications/NotificationProvider";
 
 const WithNav = () => {
 
     const onLogoutClick = () => {
         localStorage.clear();
     };
+
+    const dispatch = useNotification()
+
+    const handleNewNotification = (status, message) => {
+        dispatch({
+            type: status,
+            message: message,
+        })
+    }
+
+    const handleExpiredPasswords = e => {
+        e.preventDefault()
+
+        Request(checkExpiredPasswords+localStorage.getItem('userId'),"GET")
+            .then(res =>{
+                handleNewNotification("SUCCESS","Email successfully sent")
+            })
+            .catch(err =>{
+                handleNewNotification("ERROR","Try again later")
+            })
+    }
 
     return (
         <div>
@@ -32,13 +56,31 @@ const WithNav = () => {
                                 <Link className={"nav-link"} to={"/dashboard"}>Dashboard</Link>
                             </li>
                             <li className="nav-item">
+                                <div className={"nav-link"}>|</div>
+                            </li>
+                            <li className="nav-item">
                                 <Link className="nav-link" to={"/profile"}>Profile</Link>
+                            </li>
+                            <li className="nav-item">
+                                <div className={"nav-link"}>|</div>
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" to={"/createDataItem"}>Create New</Link>
                             </li>
                             <li className="nav-item">
+                                <div className={"nav-link"}>|</div>
+                            </li>
+                            <li className="nav-item">
                                 <Link className="nav-link" to={"/dashboard"} onClick={exportToJson}>Export</Link>
+                            </li>
+                            <li className="nav-item">
+                                <div className={"nav-link"}>|</div>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to={"/dashboard"} onClick={handleExpiredPasswords}>Check expired passwords</Link>
+                            </li>
+                            <li className="nav-item">
+                                <div className={"nav-link"}>|</div>
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" to={"/login"} onClick={onLogoutClick}>Logout</Link>

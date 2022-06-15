@@ -22,3 +22,5 @@ export const registerRoute = baseUrl + '/user';
 
 export const editDIRoute = baseUrl + '/dataItem/';
 
+export const checkExpiredPasswords = baseUrl + "/expiredDataItems?userId="
+
