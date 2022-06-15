@@ -7,7 +7,6 @@ import cardStyles from "./DataItemCard.module.css";
 
 const DataItemCard = (props) => {
 
-
     const [passwordShown, setPasswordShown] = useState(false);
     const [editPopup, setEditPopup] = useState(false);
 
@@ -18,6 +17,9 @@ const DataItemCard = (props) => {
     const onEditClick = () => {
         setEditPopup(true);
     };
+
+
+
     return (
         <Card
             style={{ width: '18rem' }}
@@ -50,7 +52,7 @@ const DataItemCard = (props) => {
                                         <i className={cardStyles.cardLabels}>Pass:</i>
                                 }
                                 <input className={cardStyles.pswdField} type={"text"} readOnly={"readonly"} value={props.value}/>
-                                <i className="bi bi-eye-slash" onClick={onEyeClick}/>
+                                <i className="bi bi-eye-slash-fill" onClick={onEyeClick}/>
                             </div>:
                             <div className={cardStyles.margins}>
                                 {
@@ -59,7 +61,7 @@ const DataItemCard = (props) => {
                                         <i className={cardStyles.cardLabels}>Pass:</i>
                                 }
                                 <input className={cardStyles.pswdField} type={"password"} readOnly={"readonly"} value={props.value}/>
-                                <i className="bi bi-eye" onClick={onEyeClick}/>
+                                <i className="bi bi-eye-fill" onClick={onEyeClick}/>
                             </div>
                     }
                     <div className={cardStyles.margins}>
@@ -72,7 +74,7 @@ const DataItemCard = (props) => {
                     </div>
                 </Card.Text>
             </Card.Body>
-            <EditDataItem trigger={editPopup} setTrigger={setEditPopup}/>
+            <EditDataItem {...props} trigger={editPopup} setTrigger={setEditPopup}/>
         </Card>
     );
 };
